@@ -342,6 +342,9 @@ function hideTip(){ tip.style.opacity = 0; }
 })();
 
 // ---------- ranking ----------
+// Overall ranks per lens over non-dubbed films (independent of filters).
+function rankAll(key){ const m = new Map(); FILMS.filter(r => !r.d && r[key] != null).sort((a,b) => (b[key]-a[key]) || ((b.n||0)-(a.n||0)) || a.t.localeCompare(b.t)).forEach((r,i) => m.set(r, i+1)); return { m, n: m.size }; }
+const ALL_RANKED = { a25: rankAll('a25'), f: rankAll('f'), pc: rankAll('pc'), cpi: rankAll('cpi'), rel: rankAll('rel'), n: rankAll('n') };
 let highlighted = null;
 const state = { lens:'a25', conf:'C', y0:1940, y1:2026, q:'', dub:false, sortKey:null, sortDir:-1, shown:100 };
 const TIER_ORDER = {A:0, B:1, C:2};
@@ -418,7 +421,7 @@ function drawTable(rows){
   $('#more').style.display = slice.length < rows.length ? '' : 'none';
   thead.querySelectorAll('th').forEach(th => th.addEventListener('click', () => { const k = th.dataset.k; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k==='t'||k==='fs'||k==='c') ? 1 : -1; } render(); }));
 }
-function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); if (typeof ALL_RANKED !== 'undefined') drawExample(); }
+function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); drawExample(); }
 $('#lens').addEventListener('change', e => { state.lens = e.target.value; state.sortKey = null; state.shown = 100; render(); });
 $('#conf').addEventListener('change', e => { state.conf = e.target.value; render(); });
 $('#y0').addEventListener('input', e => { state.y0 = +e.target.value || 1940; render(); });
@@ -429,8 +432,6 @@ $('#more').addEventListener('click', () => { state.shown += 100; render(); });
 render();
 
 // ---------- find a film ----------
-const ALL_RANKED = { a25: rankAll('a25'), f: rankAll('f'), pc: rankAll('pc'), cpi: rankAll('cpi'), rel: rankAll('rel'), n: rankAll('n') };
-function rankAll(key){ const m = new Map(); FILMS.filter(r => !r.d && r[key] != null).sort((a,b) => (b[key]-a[key]) || ((b.n||0)-(a.n||0)) || a.t.localeCompare(b.t)).forEach((r,i) => m.set(r, i+1)); return { m, n: m.size }; }
 const dl = $('#titles');
 dl.innerHTML = [...FILMS].sort((a,b) => a.t.localeCompare(b.t) || a.y - b.y).map(r => `<option value="${esc(r.t)} (${r.y})"></option>`).join('');
 function findFilm(q){
@@ -463,7 +464,6 @@ function showCard(r){
 }
 $('#find').addEventListener('input', e => showCard(findFilm(e.target.value)));
 $('#find').addEventListener('change', e => showCard(findFilm(e.target.value)));
-drawExample();
 
 // ---------- worked example (follows the selected lens) ----------
 function drawExample(){
