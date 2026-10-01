@@ -208,12 +208,12 @@ a{color:var(--accent-ink)}
 <section>
   <h2>Method</h2>
   <div class="panel example">
-    <h3>Worked example: Sholay (1975) and 3 Idiots (2009)</h3>
-    <p class="sub">The normalised figure answers one question: how much would this film have earned if every ticket it sold had been priced at the 2025 average? Three steps, with the actual values from the dataset.</p>
+    <h3 id="example-title">Worked example: Sholay (1975) and 3 Idiots (2009)</h3>
+    <p class="sub" id="example-sub"></p>
     <div id="example"></div>
   </div>
   <div class="cols">
-    <div><h3>What is normalised</h3>
+    <div><h3>Options that we can normalise</h3>
       <ul>
         <li><b>Tax basis.</b> All figures are domestic India nett, after entertainment tax or GST. Gross is not used: before 2017 it could be twice nett in some states.</li>
         <li><b>Ticket price.</b> Footfalls = nett ÷ average Hindi nett ticket price of the release year. Normalised box office = footfalls × 2025 ticket price. The two rank identically.</li>
@@ -427,7 +427,7 @@ function drawTable(rows){
   $('#more').style.display = slice.length < rows.length ? '' : 'none';
   thead.querySelectorAll('th').forEach(th => th.addEventListener('click', () => { const k = th.dataset.k; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k==='t'||k==='fs'||k==='c') ? 1 : -1; } render(); }));
 }
-function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); }
+function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); if (typeof ALL_RANKED !== 'undefined') drawExample(); }
 $('#lens').addEventListener('change', e => { state.lens = e.target.value; state.sortKey = null; state.shown = 100; render(); });
 $('#conf').addEventListener('change', e => { state.conf = e.target.value; render(); });
 $('#y0').addEventListener('input', e => { state.y0 = +e.target.value || 1940; render(); });
@@ -472,33 +472,87 @@ function showCard(r){
 }
 $('#find').addEventListener('input', e => showCard(findFilm(e.target.value)));
 $('#find').addEventListener('change', e => showCard(findFilm(e.target.value)));
+drawExample();
 
-// ---------- worked example ----------
-(function(){
+// ---------- worked example (follows the selected lens) ----------
+function drawExample(){
   const S = FILMS.find(r => r.t === 'Sholay' && r.y === 1975), I = FILMS.find(r => r.t === '3 Idiots' && r.y === 2009);
   if (!S || !I) return;
-  const ratioNom = I.n / S.n, ratioNorm = S.a25 / I.a25;
-  const row = (r, body) => `<div><span class="who">${esc(r.t)} (${r.y})</span>${body}</div>`;
+  const L = LENS[state.lens];
   const ref = fmt(META.atp_2025, 0);
-  $('#example').innerHTML = `<div class="steps">
-    <div class="step"><span class="n">1</span><div>
-      <h4>Start from domestic nett collection</h4>
-      <p>What Indian cinemas kept after entertainment tax or GST. Nominally, 3 Idiots out-earned Sholay ${fmt(ratioNom,1)} to 1.</p>
-      <div class="calc">${row(S, `nett = <b>₹${fmt(S.n,1)} cr</b>`)}${row(I, `nett = <b>₹${fmt(I.n,2)} cr</b>`)}</div>
-    </div></div>
-    <div class="step"><span class="n">2</span><div>
-      <h4>Convert rupees to tickets sold</h4>
-      <p>Where a trade source publishes footfalls, that figure is used (tier A). Otherwise nett is divided by the average Hindi ticket price of the release year (tiers B and C). 3 Idiots has a published count; Sholay's is derived from the 1975 ticket price of ₹${fmt(S.atp,2)}.</p>
-      <div class="calc">${row(S, `₹${fmt(S.n,1)} cr ÷ ₹${fmt(S.atp,2)} = <b>${fmt(S.f,2)} cr tickets</b> · tier ${S.c}`)}${row(I, `published footfalls = <b>${fmt(I.f,2)} cr tickets</b> · tier ${I.c} <span style="color:var(--ink-3)">(nett ÷ ₹${fmt(I.atp,2)} would give ${fmt(I.n/I.atp,2)} cr)</span>`)}</div>
-    </div></div>
-    <div class="step"><span class="n">3</span><div>
-      <h4>Re-price every ticket at the 2025 average (₹${ref})</h4>
-      <p>Tickets × ₹${ref} gives normalised box office. Films are then ranked on that figure; dubbed releases are excluded from the ranking. Normalised, Sholay leads 3 Idiots ${fmt(ratioNorm,1)} to 1, reversing the nominal order.</p>
-      <div class="calc">${row(S, `${fmt(S.f,2)} cr × ₹${ref} = <b>₹${fmt(S.a25,0)} cr</b> · normalised rank <b>#${S.rz}</b> (nominal #${S.rn})`)}${row(I, `${fmt(I.f,2)} cr × ₹${ref} = <b>₹${fmt(I.a25,0)} cr</b> · normalised rank <b>#${I.rz}</b> (nominal #${I.rn})`)}</div>
-    </div></div>
-  </div>
-  <p class="note">Because every film is multiplied by the same ₹${ref}, the normalised ranking is identical to ranking by tickets sold. Sholay's band is ±25% (tier C), so its normalised figure is ₹${fmt(S.lo*META.atp_2025,0)}–${fmt(S.hi*META.atp_2025,0)} cr; 3 Idiots' is ±10% (tier A).</p>`;
-})();
+  const yr = y => SERIES.find(q => q.year === y);
+  const row = (r, body) => `<div><span class="who">${esc(r.t)} (${r.y})</span>${body}</div>`;
+  const rankOf = (r, key) => { const k = ALL_RANKED[key].m.get(r); return k ? `#${k}` : '—'; };
+  const step = (n, h, p, cells) => `<div class="step"><span class="n">${n}</span><div><h4>${h}</h4><p>${p}</p><div class="calc">${cells}</div></div></div>`;
+  const s1 = step(1, 'Start from domestic nett collection',
+    `What Indian cinemas kept after entertainment tax or GST. Nominally, 3 Idiots out-earned Sholay ${fmt(I.n/S.n,1)} to 1.`,
+    row(S, `nett = <b>₹${fmt(S.n,1)} cr</b>`) + row(I, `nett = <b>₹${fmt(I.n,2)} cr</b>`));
+  const s2 = step(2, 'Convert rupees to tickets sold',
+    `Where a trade source publishes footfalls, that figure is used (tier A). Otherwise nett is divided by the average Hindi ticket price of the release year (tiers B and C). 3 Idiots has a published count; Sholay's is derived from the 1975 ticket price of ₹${fmt(S.atp,2)}.`,
+    row(S, `₹${fmt(S.n,1)} cr ÷ ₹${fmt(S.atp,2)} = <b>${fmt(S.f,2)} cr tickets</b> · tier ${S.c}`) +
+    row(I, `published footfalls = <b>${fmt(I.f,2)} cr tickets</b> · tier ${I.c} <span style="color:var(--ink-3)">(nett ÷ ₹${fmt(I.atp,2)} would give ${fmt(I.n/I.atp,2)} cr)</span>`));
+  let title, sub, steps, note;
+  switch (state.lens) {
+    case 'a25':
+      title = 'Worked example: normalised box office';
+      sub = 'How much would each film have earned if every ticket it sold had been priced at the 2025 average? Three steps, with the actual values from the dataset.';
+      steps = s1 + s2 + step(3, `Re-price every ticket at the 2025 average (₹${ref})`,
+        `Tickets × ₹${ref} gives normalised box office. Films are ranked on that figure; dubbed releases are excluded. Normalised, Sholay leads 3 Idiots ${fmt(S.a25/I.a25,1)} to 1, reversing the nominal order.`,
+        row(S, `${fmt(S.f,2)} cr × ₹${ref} = <b>₹${fmt(S.a25,0)} cr</b> · normalised rank <b>${rankOf(S,'a25')}</b> (nominal ${rankOf(S,'n')})`) +
+        row(I, `${fmt(I.f,2)} cr × ₹${ref} = <b>₹${fmt(I.a25,0)} cr</b> · normalised rank <b>${rankOf(I,'a25')}</b> (nominal ${rankOf(I,'n')})`));
+      note = `Because every film is multiplied by the same ₹${ref}, this ranking is identical to ranking by tickets sold. Sholay's band is ±25% (tier C): ₹${fmt(S.lo*META.atp_2025,0)}–${fmt(S.hi*META.atp_2025,0)} cr. 3 Idiots' is ±10% (tier A).`;
+      break;
+    case 'f':
+      title = 'Worked example: footfalls';
+      sub = 'How many tickets did each film sell? Two steps, with the actual values from the dataset.';
+      steps = s1 + s2 + step(3, 'Rank by tickets sold',
+        `Films are ranked on the ticket count; dubbed releases are excluded. Sholay sold ${fmt(S.f/I.f,1)} tickets for every one 3 Idiots sold.`,
+        row(S, `<b>${fmt(S.f,2)} cr tickets</b> · footfalls rank <b>${rankOf(S,'f')}</b> · band ${fmt(S.lo,2)}–${fmt(S.hi,2)} cr`) +
+        row(I, `<b>${fmt(I.f,2)} cr tickets</b> · footfalls rank <b>${rankOf(I,'f')}</b> · band ${fmt(I.lo,2)}–${fmt(I.hi,2)} cr`));
+      note = 'Footfalls remove ticket-price inflation entirely but still favour eras with a larger population and more cinemas. The per-1,000-people lens corrects the first of those.';
+      break;
+    case 'pc': {
+      const pS = yr(S.y).pop, pI = yr(I.y).pop;
+      title = 'Worked example: footfalls per 1,000 people';
+      sub = 'What share of the country bought a ticket? Three steps, with the actual values from the dataset.';
+      steps = s1 + s2 + step(3, 'Divide by the population of the release year',
+        `Tickets ÷ population × 1,000. India had ${fmt(pS/1e7,0)} crore people in ${S.y} and ${fmt(pI/1e7,0)} crore in ${I.y}, so the gap widens further than on raw footfalls.`,
+        row(S, `${fmt(S.f,2)} cr ÷ ${fmt(pS/1e7,1)} cr × 1,000 = <b>${fmt(S.pc,1)} per 1,000</b> · rank <b>${rankOf(S,'pc')}</b>`) +
+        row(I, `${fmt(I.f,2)} cr ÷ ${fmt(pI/1e7,1)} cr × 1,000 = <b>${fmt(I.pc,1)} per 1,000</b> · rank <b>${rankOf(I,'pc')}</b>`));
+      note = 'Population is UN World Population Prospects (via Our World in Data) from 1950, census anchors before that.';
+      break; }
+    case 'cpi': {
+      const cS = yr(S.y).cpi, cI = yr(I.y).cpi, c25 = yr(2025).cpi;
+      title = 'Worked example: nett at 2025 consumer prices';
+      sub = 'What is each film’s nett worth in 2025 rupees, using general inflation rather than ticket prices? Two steps.';
+      steps = s1 + step(2, 'Scale nett by the consumer price index',
+        `Nett × CPI(2025) ÷ CPI(release year). The CPI index was ${fmt(cS,1)} in ${S.y}, ${fmt(cI,1)} in ${I.y} and ${fmt(c25,1)} in 2025.`,
+        row(S, `₹${fmt(S.n,1)} cr × ${fmt(c25,1)} ÷ ${fmt(cS,1)} = <b>₹${fmt(S.cpi,0)} cr</b> · rank <b>${rankOf(S,'cpi')}</b>`) +
+        row(I, `₹${fmt(I.n,2)} cr × ${fmt(c25,1)} ÷ ${fmt(cI,1)} = <b>₹${fmt(I.cpi,0)} cr</b> · rank <b>${rankOf(I,'cpi')}</b>`));
+      note = `On this lens 3 Idiots stays ahead of Sholay, because ticket prices rose about ${fmt((S.atp/yr(S.y).cpi)/(META.atp_2025/c25) > 0 ? (META.atp_2025/S.atp)/(c25/cS) : 0,1)}× faster than consumer prices between ${S.y} and 2025. That is the limitation of a CPI adjustment, and why it is shown for comparison only.`;
+      break; }
+    case 'rel': {
+      const mS = S.n / S.rel, mI = I.n / I.rel;
+      title = 'Worked example: nett relative to the year’s median top-10 film';
+      sub = 'How dominant was each film in its own release year? Two steps.';
+      steps = s1 + step(2, 'Divide by the median nett of the other top-10 films that year',
+        `The film itself is removed from the top 10 before taking the median, so it cannot inflate its own denominator. Blank where a year has fewer than five tracked films.`,
+        row(S, `₹${fmt(S.n,1)} cr ÷ ₹${fmt(mS,2)} cr = <b>${fmt(S.rel,2)}× median</b> · rank <b>${rankOf(S,'rel')}</b>`) +
+        row(I, `₹${fmt(I.n,2)} cr ÷ ₹${fmt(mI,1)} cr = <b>${fmt(I.rel,2)}× median</b> · rank <b>${rankOf(I,'rel')}</b>`));
+      note = 'This lens is independent of the ticket-price series, so it is a useful check on the others. It is sensitive to how many films a year has in the dataset: pre-1994 years have fewer tracked titles.';
+      break; }
+    default:
+      title = 'Worked example: nominal nett';
+      sub = 'The unadjusted figure, for reference.';
+      steps = s1 + step(2, 'Rank on nett as reported',
+        'No adjustment. Recent films dominate because tickets cost more, not because more people watched.',
+        row(S, `<b>₹${fmt(S.n,1)} cr</b> · nominal rank <b>${rankOf(S,'n')}</b>`) + row(I, `<b>₹${fmt(I.n,2)} cr</b> · nominal rank <b>${rankOf(I,'n')}</b>`));
+      note = '';
+  }
+  $('#example-title').textContent = `${title} — Sholay (1975) and 3 Idiots (2009)`;
+  $('#example-sub').textContent = sub;
+  $('#example').innerHTML = `<div class="steps">${steps}</div>` + (note ? `<p class="note">${note}</p>` : '');
+}
 
 // ---------- checks ----------
 $('#checks tbody').innerHTML = CHECKS.map(c => `<tr><td class="l">${esc(c.check.replace(/_/g,' '))}</td><td class="l">${esc(c.target)}</td><td class="l">${esc(c.expected)}</td><td class="l">${esc(c.actual)}</td><td class="l ${c.pass?'ok':'bad'}">${c.pass?'pass':'fail'}</td></tr>`).join('');
