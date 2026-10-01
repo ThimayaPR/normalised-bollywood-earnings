@@ -139,6 +139,20 @@ pub fn run(rows: &[NormalisedFilm], dubbed: &[DubbedRow]) -> Vec<CheckResult> {
         pass: leaks.is_empty(),
     });
 
+    // No language-tagged (non-Hindi) title should be ranked.
+    let tagged: Vec<String> = rows
+        .iter()
+        .filter(|r| r.rank_footfalls.is_some() && r.title.to_ascii_lowercase().contains("(english)"))
+        .map(|r| format!("{} ({})", r.title, r.year))
+        .collect();
+    out.push(CheckResult {
+        check: "no_english_release_ranked".into(),
+        target: "ranked titles".into(),
+        expected: "0".into(),
+        actual: if tagged.is_empty() { "0".into() } else { tagged.join("; ") },
+        pass: tagged.is_empty(),
+    });
+
     // Cross-source agreement: BOI vs Hungama footfalls within 15% for most films.
     let mut compared = 0;
     let mut agree = 0;

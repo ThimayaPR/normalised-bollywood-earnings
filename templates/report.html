@@ -4,9 +4,9 @@
 :root{
   color-scheme:light;
   --ground:#f3f4f7; --surface:#ffffff; --surface-2:#e9ebf0; --line:#d9dce4; --grid:#e6e8ee;
-  --ink:#15181f; --ink-2:#4f5665; --ink-3:#7d8494;
+  --ink:#15181f; --ink-2:#4f5665; --ink-3:#6b7282;
   --accent:#2a78d6; --accent-ink:#1c5cab;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#13956a; --s4:#c47f00;
   --tierA:#1c5cab; --tierB:#5598e7; --tierC:#86b6ef;
   --warn:#b45309; --good:#047857;
   --font-display:"Bricolage Grotesque","Avenir Next","Helvetica Neue",Arial,sans-serif;
@@ -55,6 +55,9 @@ section:last-of-type{border-bottom:0}
 .key.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)}
 .swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
 svg{display:block;width:100%;height:auto;font-family:var(--font-body)}
+#chart-index,#chart-bars{overflow-x:auto}
+#chart-index svg{min-width:720px}
+#chart-bars svg{min-width:640px}
 svg text{fill:var(--ink-2);font-size:12px}
 svg .axis text{fill:var(--ink-3);font-family:var(--font-mono);font-size:11px}
 svg .grid line{stroke:var(--grid);stroke-width:1}
@@ -102,8 +105,9 @@ td.title{font-weight:600;color:var(--ink)}
 td.dim{color:var(--ink-3)}
 tr.dubbed td{color:var(--ink-3)}
 .tier{display:inline-block;min-width:22px;text-align:center;font-family:var(--font-mono);font-size:11.5px;font-weight:500;padding:2px 6px;border-radius:5px;color:var(--ink);background:var(--surface-2)}
-.tier.A{background:var(--tierA);color:#fff}.tier.B{background:var(--tierB);color:#fff}.tier.C{background:var(--tierC);color:var(--ink)}
-:root[data-theme="dark"] .tier.C,:root:not([data-theme="light"]) .tier.C{color:#fff}
+.tier.A{background:var(--tierA);color:#fff}.tier.B{background:var(--tierB);color:var(--ink)}.tier.C{background:var(--tierC);color:var(--ink)}
+:root[data-theme="dark"] .tier.A,:root[data-theme="dark"] .tier.B,:root[data-theme="dark"] .tier.C{color:#121419}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tier.A,:root:not([data-theme="light"]) .tier.B,:root:not([data-theme="light"]) .tier.C{color:#121419}}
 .pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);margin-left:6px}
 .more{margin:12px 0 0;display:flex;gap:12px;align-items:center;color:var(--ink-3);font-size:13px}
 button{font:inherit;font-size:14px;padding:8px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
@@ -161,6 +165,7 @@ a{color:var(--accent-ink)}
     <label for="find"><span class="eyebrow">Find a film</span></label>
     <input type="text" id="find" list="titles" placeholder="Search by title" autocomplete="off">
     <datalist id="titles"></datalist>
+    <p class="note" id="find-hint" hidden></p>
     <div id="film-card" hidden></div>
   </div>
   <div class="controls">
@@ -255,7 +260,7 @@ a{color:var(--accent-ink)}
   <p class="note">Produced by a reproducible pipeline from a fixed snapshot of the sources above. Hand-entered inputs (pre-1994 ticket prices, pre-1953 CPI, census anchors, dubbed-film list, title aliases) each cite their source.</p>
 </section>
 </div>
-<div class="tip" id="tip"></div>
+<div class="tip" id="tip" aria-hidden="true"></div>
 
 <script>
 const FILMS = __FILMS_JSON__;
@@ -264,14 +269,19 @@ const CHECKS = __CHECKS_JSON__;
 const META = __META_JSON__;
 
 const $ = s => document.querySelector(s);
-const fmt = (v, d=2) => v==null ? '—' : Number(v).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>0 && Math.abs(v)<100 ? Math.min(d,2) : 0});
+const fmt = (v, d=2) => {
+  if (v == null) return '—';
+  const n = Number(v);
+  if (n !== 0 && Math.abs(n) < 0.1) return n.toLocaleString('en-IN', {maximumSignificantDigits: 2});
+  return n.toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>0 && Math.abs(n)<100 ? Math.min(d,2) : 0});
+};
 const LENS = {
-  a25: {label:'Normalised box office (₹ cr, 2025 ticket prices)', unit:'₹ crore', key:'a25', d:0, band:true, bandScale:true},
-  f:   {label:'Footfalls', unit:'crore tickets', key:'f', d:2, band:true},
-  pc:  {label:'Footfalls per 1,000 people', unit:'tickets per 1,000', key:'pc', d:1},
-  cpi: {label:'Nett at 2025 CPI', unit:'₹ crore', key:'cpi', d:0},
-  rel: {label:'Nett vs year median top-10', unit:'× median', key:'rel', d:2},
-  n:   {label:'Nominal nett', unit:'₹ crore', key:'n', d:1},
+  a25: {label:'Normalised box office (₹ cr, 2025 ticket prices)', short:'normalised box office (₹ cr, 2025 ticket prices)', key:'a25', d:0, band:true, bandScale:true},
+  f:   {label:'Footfalls', short:'footfalls (crore tickets)', key:'f', d:2, band:true},
+  pc:  {label:'Footfalls per 1,000 people', short:'footfalls per 1,000 people', key:'pc', d:1},
+  cpi: {label:'Nett at 2025 CPI', short:'nett at 2025 CPI (₹ cr)', key:'cpi', d:0},
+  rel: {label:'Nett vs year median top-10', short:'nett relative to the year\u2019s median top-10 film', key:'rel', d:2},
+  n:   {label:'Nominal nett', short:'nominal nett (₹ cr)', key:'n', d:1},
 };
 $('#n-films').textContent = FILMS.length.toLocaleString('en-IN');
 $('#atp25').textContent = '₹' + fmt(META.atp_2025, 0);
@@ -306,7 +316,7 @@ function hideTip(){ tip.style.opacity = 0; }
   const rTicks = [0.25, 0.5, 1, 2, 5, 10, 20, 50, 100, 200].filter(v => { const idx = 100*v/base.atp; return idx >= lo*0.95 && idx <= hi*1.05; });
   s += `<line x1="${AX}" x2="${AX}" y1="${m.t}" y2="${H-m.b}" stroke="var(--grid)" stroke-width="1"/>`;
   for (const v of rTicks) { const yy = ly(100*v/base.atp); s += `<line x1="${AX}" x2="${AX+5}" y1="${yy}" y2="${yy}" stroke="var(--ink-3)" stroke-width="1"/><text x="${AX+9}" y="${yy+4}" text-anchor="start">₹${v < 1 ? v.toFixed(2) : v}</text>`; }
-  s += `<text x="${AX}" y="${H-10}" text-anchor="start" style="font-size:10px">₹ per ticket (blue line)</text></g>`;
+  s += `<text x="${W-2}" y="${H-10}" text-anchor="end" style="font-size:10px">₹ per ticket (blue line)</text></g>`;
   const line = (key, color, dashInterp) => {
     let d = '', dd = '', prev = null;
     for (const p of pts) {
@@ -343,7 +353,8 @@ function hideTip(){ tip.style.opacity = 0; }
 
 // ---------- ranking ----------
 // Overall ranks per lens over non-dubbed films (independent of filters).
-function rankAll(key){ const m = new Map(); FILMS.filter(r => !r.d && r[key] != null).sort((a,b) => (b[key]-a[key]) || ((b.n||0)-(a.n||0)) || a.t.localeCompare(b.t)).forEach((r,i) => m.set(r, i+1)); return { m, n: m.size }; }
+const byPipelineRank = (a,b) => ((a.rz ?? 1e9) - (b.rz ?? 1e9)) || a.t.localeCompare(b.t) || (a.y - b.y);
+function rankAll(key){ const m = new Map(); FILMS.filter(r => !r.d && r[key] != null).sort((a,b) => (b[key]-a[key]) || byPipelineRank(a,b)).forEach((r,i) => m.set(r, i+1)); return { m, n: m.size }; }
 const ALL_RANKED = { a25: rankAll('a25'), f: rankAll('f'), pc: rankAll('pc'), cpi: rankAll('cpi'), rel: rankAll('rel'), n: rankAll('n') };
 let highlighted = null;
 const state = { lens:'a25', conf:'C', y0:1940, y1:2026, q:'', dub:false, sortKey:null, sortDir:-1, shown:100 };
@@ -352,7 +363,7 @@ function filtered(){
   const L = LENS[state.lens];
   const q = state.q.trim().toLowerCase();
   let rows = FILMS.filter(r => r[L.key] != null && TIER_ORDER[r.c] <= TIER_ORDER[state.conf] && r.y >= state.y0 && r.y <= state.y1 && (state.dub || !r.d) && (!q || r.t.toLowerCase().includes(q)));
-  rows.sort((a,b) => (b[L.key] - a[L.key]) || ((b.n||0) - (a.n||0)) || a.t.localeCompare(b.t));
+  rows.sort((a,b) => (b[L.key] - a[L.key]) || byPipelineRank(a,b));
   let rk = 0; rows.forEach(r => { r._rank = r.d ? null : ++rk; });
   return rows;
 }
@@ -360,7 +371,7 @@ function bandOf(r, L){ if (!L.band || r.lo == null) return null; const k = L.ban
 function drawBars(rows){
   const L = LENS[state.lens];
   const top = rows.filter(r => !r.d).slice(0, 25);
-  $('#bar-title').textContent = `Top ${top.length} by ${L.label.toLowerCase()}`;
+  $('#bar-title').textContent = top.length ? `Top ${top.length} by ${L.short}` : `No films by ${L.short}`;
   $('#band-key').style.display = L.band ? '' : 'none';
   if (!top.length) { $('#chart-bars').innerHTML = '<p class="note">No films match these filters.</p>'; return; }
   const W = 1000, rowH = 30, m = {t:8, r:90, b:8, l:300}, H = m.t + m.b + rowH * top.length;
@@ -412,14 +423,21 @@ const COLS = [
 ];
 function drawTable(rows){
   const thead = $('#tbl thead'), tbody = $('#tbl tbody');
-  thead.innerHTML = '<tr>' + COLS.map(c => `<th class="${c.cls.includes('l')?'l':''} ${state.sortKey===c.k?'on':''}" data-k="${c.k}">${c.h}${state.sortKey===c.k ? (state.sortDir<0?' ↓':' ↑') : ''}</th>`).join('') + '</tr>';
+  thead.innerHTML = '<tr>' + COLS.map(c => `<th tabindex="0" role="button" aria-sort="${state.sortKey===c.k ? (state.sortDir<0?'descending':'ascending') : 'none'}" class="${c.cls.includes('l')?'l':''} ${state.sortKey===c.k?'on':''}" data-k="${c.k}">${c.h}${state.sortKey===c.k ? (state.sortDir<0?' ↓':' ↑') : ''}</th>`).join('') + '</tr>';
   let view = rows;
   if (state.sortKey) { const k = state.sortKey; view = [...rows].sort((a,b) => { const av = a[k], bv = b[k]; if (av==null && bv==null) return 0; if (av==null) return 1; if (bv==null) return -1; return (typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))) * state.sortDir; }); }
+  if (highlighted) { const hi = view.indexOf(highlighted); if (hi >= state.shown) state.shown = Math.ceil((hi + 1) / 100) * 100; }
   const slice = view.slice(0, state.shown);
   tbody.innerHTML = slice.map(r => `<tr class="${r.d?'dubbed':''} ${r===highlighted?'hit':''}">` + COLS.map(c => `<td class="${c.cls}">${c.f(r)}</td>`).join('') + '</tr>').join('');
+  const hitRow = tbody.querySelector('tr.hit');
+  if (hitRow && document.activeElement === $('#find')) hitRow.scrollIntoView({block:'nearest'});
   $('#count').textContent = `${slice.length.toLocaleString('en-IN')} of ${rows.length.toLocaleString('en-IN')} films`;
   $('#more').style.display = slice.length < rows.length ? '' : 'none';
-  thead.querySelectorAll('th').forEach(th => th.addEventListener('click', () => { const k = th.dataset.k; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k==='t'||k==='fs'||k==='c') ? 1 : -1; } render(); }));
+  thead.querySelectorAll('th').forEach(th => {
+    const sortBy = () => { const k = th.dataset.k; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k==='t'||k==='fs'||k==='c') ? 1 : -1; } render(); };
+    th.addEventListener('click', sortBy);
+    th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sortBy(); } });
+  });
 }
 function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); drawExample(); }
 $('#lens').addEventListener('change', e => { state.lens = e.target.value; state.sortKey = null; state.shown = 100; render(); });
@@ -435,14 +453,17 @@ render();
 const dl = $('#titles');
 dl.innerHTML = [...FILMS].sort((a,b) => a.t.localeCompare(b.t) || a.y - b.y).map(r => `<option value="${esc(r.t)} (${r.y})"></option>`).join('');
 function findFilm(q){
-  const s = q.trim().toLowerCase(); if (!s) return null;
+  const s = q.trim().toLowerCase(); if (!s) { finderHint(''); return null; }
   const m = s.match(/^(.*)\((\d{4})\)\s*$/);
   if (m) { const t = m[1].trim(), y = +m[2]; const hit = FILMS.find(r => r.t.toLowerCase() === t && r.y === y); if (hit) return hit; }
   const exact = FILMS.filter(r => r.t.toLowerCase() === s); if (exact.length) return exact.sort((a,b)=>(b.f||0)-(a.f||0))[0];
-  const starts = FILMS.filter(r => r.t.toLowerCase().startsWith(s)); if (starts.length === 1) return starts[0];
-  const contains = FILMS.filter(r => r.t.toLowerCase().includes(s)); if (contains.length === 1) return contains[0];
+  const starts = FILMS.filter(r => r.t.toLowerCase().startsWith(s)); if (starts.length === 1) { finderHint(''); return starts[0]; }
+  const contains = FILMS.filter(r => r.t.toLowerCase().includes(s)); if (contains.length === 1) { finderHint(''); return contains[0]; }
+  const pool = starts.length ? starts : contains;
+  finderHint(pool.length ? `${pool.length} matches, keep typing or pick one: ${pool.slice(0,4).map(r => `${r.t} (${r.y})`).join(' · ')}${pool.length > 4 ? ' …' : ''}` : 'No film with that title in the dataset.');
   return null;
 }
+function finderHint(msg){ const el = $('#find-hint'); el.textContent = msg; el.hidden = !msg; }
 function showCard(r){
   const card = $('#film-card'); highlighted = r;
   if (!r) { card.hidden = true; render(); return; }
@@ -495,7 +516,7 @@ function drawExample(){
       break;
     case 'f':
       title = 'Worked example: footfalls';
-      sub = 'How many tickets did each film sell? Two steps, with the actual values from the dataset.';
+      sub = 'How many tickets did each film sell? Three steps, with the actual values from the dataset.';
       steps = s1 + s2 + step(3, 'Rank by tickets sold',
         `Films are ranked on the ticket count; dubbed releases are excluded. Sholay sold ${fmt(S.f/I.f,1)} tickets for every one 3 Idiots sold.`,
         row(S, `<b>${fmt(S.f,2)} cr tickets</b> · footfalls rank <b>${rankOf(S,'f')}</b> · band ${fmt(S.lo,2)}–${fmt(S.hi,2)} cr`) +

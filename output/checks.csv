@@ -16,4 +16,5 @@ dubbed_flagged_and_unranked,KGF Chapter 2 (2022),is_dubbed=true rank=None,is_dub
 dubbed_flagged_and_unranked,Pushpa 2 (2024),is_dubbed=true rank=None,is_dubbed=true rank=None,true
 no_dubbed_in_headline,flagged rows,0,0,true
 no_dubbed_title_variant_ranked,ranked titles vs curated dubbed list,0,0,true
-cross_source_footfalls_agree_15pct,782 films with two footfall sources,>= 80% within 15%,98% (769/782),true
+no_english_release_ranked,ranked titles,0,0,true
+cross_source_footfalls_agree_15pct,803 films with two footfall sources,>= 80% within 15%,98% (790/803),true
