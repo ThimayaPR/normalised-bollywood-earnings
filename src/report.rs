@@ -124,13 +124,33 @@ pub fn render(root: &Path) -> Result<()> {
         ],
     };
 
-    let page = TEMPLATE
+    let fragment = TEMPLATE
         .replace("__FILMS_JSON__", &serde_json::to_string(&films_js)?)
         .replace("__SERIES_JSON__", &serde_json::to_string(&series_js)?)
         .replace("__CHECKS_JSON__", &serde_json::to_string(&checks)?)
         .replace("__META_JSON__", &serde_json::to_string(&meta)?);
+
+    // Fragment: head elements followed by body content, as the artifact host expects
+    // (it supplies doctype, charset, viewport and a small reset itself).
+    let frag_out = output.join("report.fragment.html");
+    fs::write(&frag_out, &fragment)?;
+
+    // Standalone: a complete document for GitHub, Pages, or opening from disk.
+    let standalone = standalone_document(&fragment)?;
     let out = output.join("report.html");
-    fs::write(&out, page)?;
-    eprintln!("report: wrote {} ({} films)", out.display(), films.len());
+    fs::write(&out, standalone)?;
+    eprintln!("report: wrote {} and {} ({} films)", out.display(), frag_out.display(), films.len());
     Ok(())
+}
+
+/// Wrap the fragment in a full HTML document. The fragment's `<title>`, font link and
+/// `<style>` go in `<head>`; everything from the first `<div class="wrap">` is the body.
+fn standalone_document(fragment: &str) -> Result<String> {
+    let split = fragment
+        .find("<div class=\"wrap\">")
+        .context("template must contain <div class=\"wrap\">")?;
+    let (head, body) = fragment.split_at(split);
+    Ok(format!(
+        "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n<meta name=\"description\" content=\"Hindi film box office 1940-2026 in rupees, normalised for ticket-price inflation.\">\n<style>html{{color-scheme:light dark}}img{{max-width:100%}}[hidden]{{display:none!important}}</style>\n{head}</head>\n<body>\n{body}\n</body>\n</html>\n"
+    ))
 }

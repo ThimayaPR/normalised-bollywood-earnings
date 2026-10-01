@@ -10,6 +10,8 @@ No machine learning, no LLM calls, no randomness. Every number is a function of 
 source snapshot in `data/raw/` and the hand-curated CSVs in `data/manual/` (each row of
 which cites its source URL).
 
+**Report:** https://thimayapr.github.io/normalised-bollywood-earnings/output/report.html
+
 ## Quick start
 
 ```sh
@@ -31,7 +33,8 @@ snapshot; re-run `fetch` after deleting a cached file to refresh that source.
 | `output/atp_series.csv` | per year: Hindi nett average ticket price, CPI, population, with a method label for each |
 | `output/checks.csv` | sanity checks against published figures; `build` exits non-zero if any fails (use `--no-strict` to override) |
 | `output/possible_duplicates.csv` | same-year title pairs within edit distance 2 that were not merged, for alias curation |
-| `output/report.html` | interactive report (lens switcher, confidence floor, era filter, charts, appendix) |
+| `output/report.html` | interactive report as a standalone page (lens switcher, confidence floor, era filter, charts, appendix) |
+| `output/report.fragment.html` | the same report without the document skeleton, for hosts that supply their own |
 | `data/interim/*.csv` | one tidy table per source after parsing, plus `films_merged.csv` |
 
 ## Method
