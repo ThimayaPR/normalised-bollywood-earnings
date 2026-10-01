@@ -1,0 +1,539 @@
+{
+  "entries": {
+    "bis_long_cpi_india.csv": {
+      "url": "https://stats.bis.org/api/v1/data/WS_LONG_CPI/A.IN/all?format=csv",
+      "sha256": "602c4d033cae82577ac8ac798116b4a8d42f86cb119b54cc267c1c23f9c529a7",
+      "bytes": 5277
+    },
+    "boi_1994_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1994&pageId=4",
+      "sha256": "4845ee03be3d51782c8f19063df575355e054e102e8ae5d255e7a07be210a250",
+      "bytes": 140614
+    },
+    "boi_1994_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1994&pageId=6",
+      "sha256": "598114c14c3ebfb3c17bf9836d6777e3bec2ecd5efa47b1826420db907c2634e",
+      "bytes": 133695
+    },
+    "boi_1995_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1995&pageId=4",
+      "sha256": "35efdba968bf1240eb8e9fe6543ba9a8a4e781e39155caacf7992e542fa84b56",
+      "bytes": 141015
+    },
+    "boi_1995_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1995&pageId=6",
+      "sha256": "1438844a2928932537abe53764f2d9ecc5fc73cdd2505e7e119c2ea85497b93b",
+      "bytes": 133602
+    },
+    "boi_1996_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1996&pageId=4",
+      "sha256": "8b1b3ac3ea0c771786abd6144f2382a968486f83601a7eff4ff1badf9f06ecaf",
+      "bytes": 140903
+    },
+    "boi_1996_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1996&pageId=6",
+      "sha256": "e9cac305ea7ca89d17ae0d04b68f6abecde6a333745110deab9916e35de825cf",
+      "bytes": 133580
+    },
+    "boi_1997_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1997&pageId=4",
+      "sha256": "1bde64630ffd545bea5f78501a2d9f9f5d173fc75dea5eff66698867657deb1a",
+      "bytes": 140563
+    },
+    "boi_1997_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1997&pageId=6",
+      "sha256": "adf2177ee21eb935b0e612e60542b10de8a9265444aa8e58485349d396d20e3c",
+      "bytes": 133373
+    },
+    "boi_1998_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1998&pageId=4",
+      "sha256": "a7d85236a108e5ac28510abb9d1674bf5efde60b1fbaedc25652ca0756e07ebe",
+      "bytes": 140935
+    },
+    "boi_1998_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1998&pageId=6",
+      "sha256": "f5347b1281a77feb4dc03d3eb7efe5353b7409b8d79046d985b331e2f4e9bdd8",
+      "bytes": 133819
+    },
+    "boi_1999_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1999&pageId=4",
+      "sha256": "93287e49473f5e6a9ac933210bb8e9e1b10fce0e037887de3907095334caf9e8",
+      "bytes": 141392
+    },
+    "boi_1999_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=1999&pageId=6",
+      "sha256": "1443929099b0c87c0d0708bb321c840f8c8c610b22709602378577fbb27064df",
+      "bytes": 134210
+    },
+    "boi_2000_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2000&pageId=4",
+      "sha256": "8f1de8eb6ee7c5f37aafc98ae8bb6cc9379ae65f73df095113996e8a1a2b622c",
+      "bytes": 140668
+    },
+    "boi_2000_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2000&pageId=6",
+      "sha256": "89a9e45d512e91ba07bd0928d136f5cb99edb6ba9b3f288c9336e3822f29c95f",
+      "bytes": 133450
+    },
+    "boi_2001_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2001&pageId=4",
+      "sha256": "ba7dd2aa9bdffb3fef72223c7538e128b2fdb4cc5a7e8864a029995a4926cd3b",
+      "bytes": 141142
+    },
+    "boi_2001_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2001&pageId=6",
+      "sha256": "81fb4db1a23782bf71815a9265f77d7e5c26713b7300bc1c59c22f0e7c3f080e",
+      "bytes": 134063
+    },
+    "boi_2002_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2002&pageId=4",
+      "sha256": "8bf7fba78d722259d9bc147d139a1fe9fd15c7de15e4e88a3d5bbfe4448eb8d9",
+      "bytes": 141146
+    },
+    "boi_2002_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2002&pageId=6",
+      "sha256": "5845f9d1e1cc6adb8e7a0b63588f7524c8a6f6c7286992db179b9165f389c8b9",
+      "bytes": 134294
+    },
+    "boi_2003_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2003&pageId=4",
+      "sha256": "95d0551e775ab5ba3e03594a99e895e987583f234ac8955ddd4706ecc33e4eda",
+      "bytes": 140338
+    },
+    "boi_2003_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2003&pageId=6",
+      "sha256": "8eb413bb04ce1ca9f79bbe8145a7b7be6e3b1ea505d185546066214ae64d1131",
+      "bytes": 133434
+    },
+    "boi_2004_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2004&pageId=4",
+      "sha256": "539bb8440f06e7b7e0fbcd762fd6ad147cb5e4cffe8703f7897a3aa98954bb80",
+      "bytes": 140096
+    },
+    "boi_2004_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2004&pageId=6",
+      "sha256": "128820af71e3b3490eb60ac47e6493878fe2e469f7931bfcbf5331181de66d67",
+      "bytes": 133240
+    },
+    "boi_2005_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2005&pageId=4",
+      "sha256": "8b601f60cf32e13391ce8c0990b0c98cf7f659e0455059edfe1b1ac333d4a50a",
+      "bytes": 140903
+    },
+    "boi_2005_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2005&pageId=6",
+      "sha256": "2be6abbaa9ed029fbce0eba976653436809c7f4b56aa8d303676dd7463a47be7",
+      "bytes": 133527
+    },
+    "boi_2006_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2006&pageId=4",
+      "sha256": "68a674818a15a1f5def221c33d4dbbaabfad763cc3c1592161419976d7fe0f30",
+      "bytes": 141090
+    },
+    "boi_2006_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2006&pageId=6",
+      "sha256": "88b1871fca4c39d8d3872d54be97fe0d96131352ca3f8c73003ccb27ff41f53d",
+      "bytes": 133980
+    },
+    "boi_2007_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2007&pageId=4",
+      "sha256": "9b3830632fcdc9856a7d21740be69bca73bbf9bd8579057166300ce8557e8fa9",
+      "bytes": 140733
+    },
+    "boi_2007_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2007&pageId=6",
+      "sha256": "2a2f6e0d103df341524ff4429ae90a016174f0c89c13852d0377927f2d192237",
+      "bytes": 133399
+    },
+    "boi_2008_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2008&pageId=4",
+      "sha256": "0316c12c0f821f3b8b01d48bc7458472ae1ebb240531f9be71611ee3586a4c75",
+      "bytes": 140194
+    },
+    "boi_2008_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2008&pageId=6",
+      "sha256": "5af0251b6580dae72a300d92eedaaf0c6520190956d4ccea98f4b9db26d804ec",
+      "bytes": 133093
+    },
+    "boi_2009_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2009&pageId=4",
+      "sha256": "e383348ec09b0807ea44b3efff9deede20a95d08e58b5584e8b17ea2a13e2363",
+      "bytes": 140552
+    },
+    "boi_2009_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2009&pageId=6",
+      "sha256": "0748a7ff7af5fa0d892951ebf65a7d3b87181bc26a9d21e5036d2039b76b9b0d",
+      "bytes": 133110
+    },
+    "boi_2010_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2010&pageId=4",
+      "sha256": "97b0f9b47067c50f7cea257b626578acd60a49e6c9f88488a6af9654e5e5b147",
+      "bytes": 140101
+    },
+    "boi_2010_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2010&pageId=6",
+      "sha256": "40d5b504ca33daf3f61959f7fc05a867b13f6728ab35b7db56a8a9edf323dad4",
+      "bytes": 133145
+    },
+    "boi_2011_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2011&pageId=4",
+      "sha256": "d4899ec4709fc8130d4df3cef35b4f0a6129e955165b6686b6c5b65407472033",
+      "bytes": 140243
+    },
+    "boi_2011_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2011&pageId=6",
+      "sha256": "41783b9039c70c029e9fc0d7434aadd164f955a3a019fe0eec306d99b4838aed",
+      "bytes": 132952
+    },
+    "boi_2012_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2012&pageId=4",
+      "sha256": "02715573570c2a7b4bc273c02b2efb7f56f7b72aa006e2c07675a04dff820dce",
+      "bytes": 140614
+    },
+    "boi_2012_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2012&pageId=6",
+      "sha256": "81966b729c93635f81d6cbf7a4171963ee277e177173486cf0d3fb2dbfa35ba4",
+      "bytes": 133303
+    },
+    "boi_2013_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2013&pageId=4",
+      "sha256": "f2fa8d0e42794a63b24e600680b43b27902293a69da32dcc9b6cdf00dacbbe68",
+      "bytes": 141807
+    },
+    "boi_2013_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2013&pageId=6",
+      "sha256": "dcf34ba895debc6d80d791f034b048448411440861889d1fc1ff22fcb0defa9d",
+      "bytes": 134542
+    },
+    "boi_2014_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2014&pageId=4",
+      "sha256": "9340b1eb998ce388feb0f6542f06a47c8d1dae795d337db226106dd372f52991",
+      "bytes": 141403
+    },
+    "boi_2014_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2014&pageId=6",
+      "sha256": "708af74f9430d271069797ed77612e0d8ba53a3d00bd0b5f9094ec2f05fa4f4b",
+      "bytes": 134259
+    },
+    "boi_2015_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2015&pageId=4",
+      "sha256": "6959f8baab2272a4606f180ea267d38f5f119c8fc92e9bc75c8f90bf0c951aba",
+      "bytes": 141779
+    },
+    "boi_2015_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2015&pageId=6",
+      "sha256": "1905f9971a25a87a36ab980547e7d002cce1fb105af3b944ad2993dc1011b831",
+      "bytes": 134446
+    },
+    "boi_2016_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2016&pageId=4",
+      "sha256": "d8a7e84188f52e37eae51dcc12de8cd7f4381e6a5caf27bcbc198123fee50930",
+      "bytes": 140699
+    },
+    "boi_2016_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2016&pageId=6",
+      "sha256": "59a98107175e7893c96bdf4cedfc85be3b37751e971b5788e913b07c50afdb54",
+      "bytes": 133671
+    },
+    "boi_2017_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2017&pageId=4",
+      "sha256": "ad4d1052db2e33e308c91f8e607c5be736341b83177f2b8efc25e3f82bf83ce6",
+      "bytes": 141958
+    },
+    "boi_2017_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2017&pageId=6",
+      "sha256": "768332c65ebe6c604b46d4c82ff902966975ec2c24ce6eec8ebc040d48aa8db1",
+      "bytes": 134931
+    },
+    "boi_2018_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2018&pageId=4",
+      "sha256": "dd7dc66555daf1852173b4a5f327f6574f6926309f89e568b898b68b4116c102",
+      "bytes": 140896
+    },
+    "boi_2018_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2018&pageId=6",
+      "sha256": "584a2cf0ea011980bcf38dd7c652a4766dfc6a1603f292e701bf98cce723b367",
+      "bytes": 133546
+    },
+    "boi_2019_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2019&pageId=4",
+      "sha256": "ad42040d999ab5c62f22f9d89aff1a4c696e7fc849501c0b44b7792ca8340afb",
+      "bytes": 140960
+    },
+    "boi_2019_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2019&pageId=6",
+      "sha256": "50c8cabbc84ec43a6a5b6b430fd6e81deb6f6c166c9a8fc26068b343245eff9f",
+      "bytes": 133663
+    },
+    "boi_2020_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2020&pageId=4",
+      "sha256": "c9d791c509f3c77d541e9cf2247bb122fe1a72e00d930c5e5e9556d5de4e7ec7",
+      "bytes": 140127
+    },
+    "boi_2020_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2020&pageId=6",
+      "sha256": "59ff3c63c873157502c2cadeb0960cb70656649754bcb68f81de6cc36ffb0285",
+      "bytes": 134061
+    },
+    "boi_2021_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2021&pageId=4",
+      "sha256": "e2b8c15de6a221f52e4fa9dd8f7538805331d543951ecd5818f158f5841a79b2",
+      "bytes": 133590
+    },
+    "boi_2021_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2021&pageId=6",
+      "sha256": "432c0d53255cfb1959dfeac26ecbf5676c91fc1821efa360c655fb9373f84b9d",
+      "bytes": 132577
+    },
+    "boi_2022_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2022&pageId=4",
+      "sha256": "f570d98d4b52b5dcf96238c5e00d08b2e09448aa1d930c95d00c204c30c58bcb",
+      "bytes": 135258
+    },
+    "boi_2022_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2022&pageId=6",
+      "sha256": "53a1e1d5f13d51c98a64aecad0b930b826359a145ca1e9ad9d8da2aa1780cc33",
+      "bytes": 127751
+    },
+    "boi_2023_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2023&pageId=4",
+      "sha256": "31e83246217679513c4fc1db69fad3c98bd23237a2ef19023fb903d57bdadd57",
+      "bytes": 102944
+    },
+    "boi_2023_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2023&pageId=6",
+      "sha256": "bd640d33a14104394d030cc0d89ba84f170eb6739a1bb3634a8c0381981667c5",
+      "bytes": 98056
+    },
+    "boi_2024_p4.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2024&pageId=4",
+      "sha256": "02bd08d8f61312adf46235ae7837f7a79fc77fa6369257ae2748894b88b664e2",
+      "bytes": 82464
+    },
+    "boi_2024_p6.html": {
+      "url": "https://www.boxofficeindia.com/years.php?year=2024&pageId=6",
+      "sha256": "342ccc1067aaa2aaa4aee68d58cf116dbdb8cb1b7c1f33ee3ce51e98f512b001",
+      "bytes": 80648
+    },
+    "hungama_footfalls_1994.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1994/",
+      "sha256": "7b2bfe5659c18b31b043b92c8c4f63789d12cf8c06bc11cf71b945e37258a539",
+      "bytes": 220818
+    },
+    "hungama_footfalls_1995.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1995/",
+      "sha256": "244b107a05e2b86b4469180fc7eaddfc2bc1749956eb59304639beb3f6644653",
+      "bytes": 220729
+    },
+    "hungama_footfalls_1996.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1996/",
+      "sha256": "3b01e9090ed9df7c14a8dbe9c3be8ac4d52b632c672464ce41248d31353c05ec",
+      "bytes": 220642
+    },
+    "hungama_footfalls_1997.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1997/",
+      "sha256": "2e4561917cfaff2c300cdad61b8294c988f52d85dac170c1915588606b7ca517",
+      "bytes": 244050
+    },
+    "hungama_footfalls_1998.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1998/",
+      "sha256": "73acfe37369a9bc04b3b7dd7c5ef00cb776432484998099ed4a91f40119f6601",
+      "bytes": 220819
+    },
+    "hungama_footfalls_1999.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/1999/",
+      "sha256": "53aa6be2a9189d7e0829a4ceaa8e0be37737ada87e72c20b91dfd01a2b8892a4",
+      "bytes": 220581
+    },
+    "hungama_footfalls_2000.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2000/",
+      "sha256": "76568b7680761ced52f8c925cad923a8c49942211af368292faa1800f63b06ff",
+      "bytes": 220929
+    },
+    "hungama_footfalls_2001.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2001/",
+      "sha256": "95f8ae4a77017bb33b09a8375a3764b3a4e41766bc2eb8a5ab21e6b78a4d70fb",
+      "bytes": 221153
+    },
+    "hungama_footfalls_2002.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2002/",
+      "sha256": "bea4c88a27b8679c81d8711a6a5e3e9eb609d1ef234efc44be82d420bb3ef785",
+      "bytes": 221196
+    },
+    "hungama_footfalls_2003.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2003/",
+      "sha256": "f79f19babe4a5f3f231d67fe389d739a0d19bdb72fbcdd311d9452713a31ef63",
+      "bytes": 226250
+    },
+    "hungama_footfalls_2004.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2004/",
+      "sha256": "95161a2661ca065a5a9405f6c5a68f880b21b22b11792c0ebb8c8ab4fd2ed2db",
+      "bytes": 220674
+    },
+    "hungama_footfalls_2005.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2005/",
+      "sha256": "faea88849ebd0c5a9dea1922bf33663e4630dd095bd50c3e7aa3c65d4cbdf387",
+      "bytes": 220844
+    },
+    "hungama_footfalls_2006.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2006/",
+      "sha256": "f767b5b95784e2595bfaac56aa71b0ac03b31f003922c0fb214aa648a6562bb4",
+      "bytes": 220936
+    },
+    "hungama_footfalls_2007.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2007/",
+      "sha256": "e4fe6e1cd105404923c1eece5aca6a34398d3c1c3238f399b7e9a2a1ee1b5f4a",
+      "bytes": 221030
+    },
+    "hungama_footfalls_2008.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2008/",
+      "sha256": "2f28016dc7e59c19f9852b70cb665887ad9b2a8e24bb80be65c483b769bc68e0",
+      "bytes": 225951
+    },
+    "hungama_footfalls_2009.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2009/",
+      "sha256": "bfe5a7b6a2391d6402598bdc209a90ac02f17d28c2c271790ede7326b798e304",
+      "bytes": 220910
+    },
+    "hungama_footfalls_2010.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2010/",
+      "sha256": "4a150049d067cb8ddd5dda8bfab6b2a00f8c4c684fc0cb9ca128414860ab1d6e",
+      "bytes": 220875
+    },
+    "hungama_footfalls_2011.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2011/",
+      "sha256": "baebc7985397b443ae5b1a09fe767a841e125821ffd16b0006341fef8a71296d",
+      "bytes": 220928
+    },
+    "hungama_footfalls_2012.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2012/",
+      "sha256": "71010a688a7288932dd6cfc4951b4e22882edf0fbf19eda0b98398cfb810f61b",
+      "bytes": 220892
+    },
+    "hungama_footfalls_2013.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2013/",
+      "sha256": "9d803355c23bf2850b07614c4d222b8406f1128f9245fa4a5b3f32f3d01242e9",
+      "bytes": 221126
+    },
+    "hungama_footfalls_2014.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2014/",
+      "sha256": "8dac5285ae53243dba2b29fb6939822166c53e8c8430c3caf7eab20403ffb90d",
+      "bytes": 220787
+    },
+    "hungama_footfalls_2015.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2015/",
+      "sha256": "333a8ba9489e24a2bbe259e4cfcc28355cd5a527cf32adf71f07b66424ad3ce4",
+      "bytes": 250285
+    },
+    "hungama_footfalls_2016.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2016/",
+      "sha256": "f291cdd08b2f9b98263edff1dd390ea451d5029d025e426eb2d5b278b64737dd",
+      "bytes": 220707
+    },
+    "hungama_footfalls_2017.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2017/",
+      "sha256": "d4641a8f31e6044fde28ab3280008477409c772644f678ed66a1b44743096822",
+      "bytes": 220886
+    },
+    "hungama_footfalls_2018.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2018/",
+      "sha256": "749b94e3674b4af86ab8f040309be5643b5d88d65d52dfb048c8341cb72a1d48",
+      "bytes": 220692
+    },
+    "hungama_footfalls_2019.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2019/",
+      "sha256": "1362f136d3b11e1153b32a26827a8f0297e2a31d5d20770c014ce032ed6f307e",
+      "bytes": 220815
+    },
+    "hungama_footfalls_2020.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2020/",
+      "sha256": "eaceb770f7ff6f7efd8b5fe15b44d3760d67891b46bce4b8239348b37bb966b2",
+      "bytes": 215654
+    },
+    "hungama_footfalls_2021.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2021/",
+      "sha256": "5141233e607d3146c326036c072ef6d752c9da6ea7ebe21b680dbfafc59604dd",
+      "bytes": 212833
+    },
+    "hungama_footfalls_2022.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2022/",
+      "sha256": "75b7587703b66ddf9b4d7907c43588ea5c2a28d9925f706a7ef154240879ffbf",
+      "bytes": 221068
+    },
+    "hungama_footfalls_2023.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2023/",
+      "sha256": "539e7ccec2eb838fdda787650ca7ca6727e17a52104a1666351edd58ed6b6af9",
+      "bytes": 212756
+    },
+    "hungama_footfalls_2024.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2024/",
+      "sha256": "b3d46a7e1797b8ae908119ea2d85faa58865edad3d32aede0b28377127996092",
+      "bytes": 209511
+    },
+    "hungama_footfalls_2025.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2025/",
+      "sha256": "15f7d8ac4b9f3299ac72a1017e077a7bae91c88efcb1e0a817ed260055606138",
+      "bytes": 208642
+    },
+    "hungama_footfalls_2026.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/2026/",
+      "sha256": "8797d3d7622ecfc55035d85e993f59de19151e2faa5ceba2032cfc12d409dfc0",
+      "bytes": 209082
+    },
+    "hungama_footfalls_alltime.html": {
+      "url": "https://www.bollywoodhungama.com/box-office-collections/footfalls/",
+      "sha256": "ab766362ffd639f0666315ceea6a29cf6548ff88fc7cc3be4f2d839f4f29889a",
+      "bytes": 249097
+    },
+    "keepalive_1940s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1940-1949",
+      "sha256": "b0701a46b363ed9377a764ac46bf3b2ce0daab3710e4dad409e9ed52ca238d73",
+      "bytes": 73328
+    },
+    "keepalive_1950s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1950-1959",
+      "sha256": "b381599a517a578cc9b81e2ac4ade8d2f823faedef6885d43a224c813e62cd76",
+      "bytes": 73296
+    },
+    "keepalive_1960s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1960-1969",
+      "sha256": "524f032bb9b1e8582ce53c6230ff3a1aa48535cd5507bda1e0129d7c962bd423",
+      "bytes": 100446
+    },
+    "keepalive_1970s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1970-1979",
+      "sha256": "7666cc560b8f60c5d8a55843eee6f4fcc4bf9199e1bdb9e46a58a3ae19d1740d",
+      "bytes": 100500
+    },
+    "keepalive_1980s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1980-1989",
+      "sha256": "62492d62f2599ce75f48c4ae90e22e2f6b6832712ad18b1e7f9b840f67f22d6f",
+      "bytes": 101761
+    },
+    "keepalive_1990s.html": {
+      "url": "https://www.keepalivebollywood.com/boxofficebollywood.php?yr=1990-1999",
+      "sha256": "ba843993294f6643abd283a941efdda17b1755dd50eb94f46c215bcc70fb919c",
+      "bytes": 78024
+    },
+    "owid_population_unwpp.csv": {
+      "url": "https://ourworldindata.org/grapher/population-unwpp.csv?country=~IND",
+      "sha256": "69cefa274afbd51851369b79f364c41303c1581cedbbbca5ca38a475364888d8",
+      "bytes": 552383
+    },
+    "wiki_domestic_net_hindi.html": {
+      "url": "https://en.wikipedia.org/wiki/List_of_highest_domestic_net_collection_of_Hindi_films",
+      "sha256": "a924d0ce9db989394ef2723d2046272a081c1324fdcc8b6093ca78f111c7f2f8",
+      "bytes": 610900
+    },
+    "wiki_highest_grossing_india.html": {
+      "url": "https://en.wikipedia.org/wiki/List_of_highest-grossing_films_in_India",
+      "sha256": "4e6ecefeae08cae8d777c1f2f7fc80d92df7009a8795332b7d1d35de7b417f50",
+      "bytes": 522240
+    },
+    "worldbank_gdp_per_capita_lcu.json": {
+      "url": "https://api.worldbank.org/v2/country/IN/indicator/NY.GDP.PCAP.CN?format=json&per_page=100",
+      "sha256": "06461c3303630a25d9f054d475479df85e5ca599cf1e7402df726e2a76ed2cab",
+      "bytes": 14339
+    }
+  }
+}

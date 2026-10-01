@@ -1,0 +1,461 @@
+<title>Normalised Bollywood Earnings</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ground:#f3f4f7; --surface:#ffffff; --surface-2:#e9ebf0; --line:#d9dce4; --grid:#e6e8ee;
+  --ink:#15181f; --ink-2:#4f5665; --ink-3:#7d8494;
+  --accent:#2a78d6; --accent-ink:#1c5cab;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --tierA:#1c5cab; --tierB:#5598e7; --tierC:#86b6ef;
+  --warn:#b45309; --good:#047857;
+  --font-display:"Bricolage Grotesque","Avenir Next","Helvetica Neue",Arial,sans-serif;
+  --font-body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#121419; --surface:#1a1d24; --surface-2:#232732; --line:#2f3440; --grid:#262a34;
+    --ink:#f2f3f6; --ink-2:#b9bec9; --ink-3:#8a90a0;
+    --accent:#3987e5; --accent-ink:#86b6ef;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+    --tierA:#6da7ec; --tierB:#3987e5; --tierC:#184f95;
+    --warn:#f59e0b; --good:#34d399;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#121419; --surface:#1a1d24; --surface-2:#232732; --line:#2f3440; --grid:#262a34;
+  --ink:#f2f3f6; --ink-2:#b9bec9; --ink-3:#8a90a0;
+  --accent:#3987e5; --accent-ink:#86b6ef;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+  --tierA:#6da7ec; --tierB:#3987e5; --tierC:#184f95;
+  --warn:#f59e0b; --good:#34d399;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:28px 64px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,5.5vw,60px);font-weight:800;letter-spacing:-0.02em;line-height:1.02}
+h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;letter-spacing:-0.01em;margin-bottom:6px}
+h3{font-size:16px;font-weight:700}
+.eyebrow{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.lede{font-size:clamp(16px,1.6vw,19px);color:var(--ink-2);max-width:62ch;margin:14px 0 0}
+header{display:grid;gap:10px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--ink-3);font-family:var(--font-mono)}
+section{padding-block:34px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.sub{color:var(--ink-2);max-width:72ch;margin:0 0 18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.chart-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.key{width:18px;height:3px;border-radius:2px;display:inline-block}
+.key.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)}
+.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+svg{display:block;width:100%;height:auto;font-family:var(--font-body)}
+svg text{fill:var(--ink-2);font-size:12px}
+svg .axis text{fill:var(--ink-3);font-family:var(--font-mono);font-size:11px}
+svg .grid line{stroke:var(--grid);stroke-width:1}
+svg .lbl{fill:var(--ink);font-size:12.5px}
+svg .val{fill:var(--ink-2);font-family:var(--font-mono);font-size:11.5px}
+.find{display:grid;gap:10px;margin:0 0 18px}
+.find input{font:inherit;font-size:16px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:8px;padding:11px 14px;width:100%}
+.card{display:grid;gap:14px;padding-top:6px}
+.card .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
+.card .head h3{font-size:22px}
+.card .head .yr{font-family:var(--font-mono);color:var(--ink-3)}
+.lensgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.lensgrid div{background:var(--ground);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.lensgrid .k{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.lensgrid .v{font-family:var(--font-mono);font-size:18px;color:var(--ink)}
+.lensgrid .r{font-size:12.5px;color:var(--ink-2)}
+.card .prov{font-size:13px;color:var(--ink-2)}
+tr.hit td{background:color-mix(in srgb, var(--accent) 14%, transparent)}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 18px}
+.controls label{display:grid;gap:4px;font-size:12px;color:var(--ink-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+.controls select,.controls input[type=text],.controls input[type=number]{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;text-transform:none;letter-spacing:0}
+.controls .check{display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink-2);font-size:14px;align-self:end;padding-bottom:9px}
+.controls .check input{width:16px;height:16px;accent-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr;gap:18px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:13.5px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--grid);white-space:nowrap;font-variant-numeric:tabular-nums}
+th{position:sticky;top:0;background:var(--surface-2);color:var(--ink-2);font-weight:600;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;user-select:none}
+th.on{color:var(--accent-ink)}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+td.num{font-family:var(--font-mono);font-size:12.5px}
+td.title{font-weight:600;color:var(--ink)}
+td.dim{color:var(--ink-3)}
+tr.dubbed td{color:var(--ink-3)}
+.tier{display:inline-block;min-width:22px;text-align:center;font-family:var(--font-mono);font-size:11.5px;font-weight:500;padding:2px 6px;border-radius:5px;color:var(--ink);background:var(--surface-2)}
+.tier.A{background:var(--tierA);color:#fff}.tier.B{background:var(--tierB);color:#fff}.tier.C{background:var(--tierC);color:var(--ink)}
+:root[data-theme="dark"] .tier.C,:root:not([data-theme="light"]) .tier.C{color:#fff}
+.pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);margin-left:6px}
+.more{margin:12px 0 0;display:flex;gap:12px;align-items:center;color:var(--ink-3);font-size:13px}
+button{font:inherit;font-size:14px;padding:8px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button:hover{border-color:var(--accent)}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--ground);padding:8px 10px;border-radius:7px;font-size:12.5px;line-height:1.4;max-width:280px;z-index:10;opacity:0;transition:opacity .08s}
+.tip b{font-weight:600}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px 28px}
+.cols h3{margin-bottom:6px}
+.cols p,.cols li{color:var(--ink-2);font-size:14px}
+.cols ul{margin:0;padding-left:18px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0;font-size:14px}
+dt{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-3)}
+dd{margin:0;color:var(--ink-2)}
+.checks td.ok{color:var(--good);font-weight:600}.checks td.bad{color:var(--warn);font-weight:600}
+a{color:var(--accent-ink)}
+.srcs li{font-size:13.5px;color:var(--ink-2);margin-bottom:4px;overflow-wrap:anywhere}
+.note{font-size:13px;color:var(--ink-3);margin:10px 0 0}
+@media (max-width:640px){th,td{padding:7px 8px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Hindi films · India domestic box office · 1940 – 2026</div>
+  <h1>Normalised Bollywood Earnings</h1>
+  <p class="lede">Hindi film box office in rupees, normalised for ticket-price inflation. Each film's domestic nett collection is converted to the number of tickets it sold, using the average Hindi ticket price of its release year, and those tickets are re-priced at the 2025 ticket. The result is what each film would have earned at today's prices, so releases from different decades can be compared directly.</p>
+  <div class="meta">
+    <span><span id="n-films"></span> films</span>
+    <span>domestic nett basis</span>
+    <span>Hindi-dubbed South Indian films shown, not ranked</span>
+  </div>
+</header>
+
+<section>
+  <h2>Ticket prices, inflation and income</h2>
+  <p class="sub">Indexed to 1994 = 100 on a log scale. The right-hand axis reads the ticket-price line in rupees. Ticket prices rose roughly three times faster than consumer prices after 2000, which is why a CPI adjustment alone still favours recent films. Dashed segments are interpolated between documented anchors. Hover a year for values, including the ticket as a share of one day's average income.</p>
+  <div class="panel">
+    <div class="chart-title"><h3>Ticket price vs consumer prices, income and population</h3>
+      <div class="legend">
+        <span><i class="key" style="background:var(--s1)"></i>Hindi nett ticket price</span>
+        <span><i class="key" style="background:var(--s2)"></i>Consumer price index</span>
+        <span><i class="key" style="background:var(--s3)"></i>Population</span>
+        <span><i class="key" style="background:var(--s4)"></i>Income per person</span>
+        <span><i class="key dash" style="color:var(--ink-3)"></i>interpolated</span>
+      </div>
+    </div>
+    <div id="chart-index"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Ranking</h2>
+  <p class="sub">Normalised box office = tickets sold × the 2025 average ticket (<span class="atp25"></span>). Ranks recompute within the current filters. Confidence tiers A, B and C are defined under Method.</p>
+  <div class="panel find">
+    <label for="find"><span class="eyebrow">Find a film</span></label>
+    <input type="text" id="find" list="titles" placeholder="Search by title" autocomplete="off">
+    <datalist id="titles"></datalist>
+    <div id="film-card" hidden></div>
+  </div>
+  <div class="controls">
+    <label>Lens
+      <select id="lens">
+        <option value="a25">Normalised box office (₹ cr at 2025 ticket prices)</option>
+        <option value="f">Footfalls (crore tickets)</option>
+        <option value="pc">Footfalls per 1,000 people</option>
+        <option value="cpi">Nett at 2025 CPI (₹ cr)</option>
+        <option value="rel">Nett vs that year's median top-10 film</option>
+        <option value="n">Nominal nett (₹ cr)</option>
+      </select></label>
+    <label>Confidence floor
+      <select id="conf">
+        <option value="C">All tiers (A, B, C)</option>
+        <option value="B">A and B only (1994 onward)</option>
+        <option value="A">A only (sourced footfalls)</option>
+      </select></label>
+    <label>From year <input type="number" id="y0" min="1940" max="2026" value="1940"></label>
+    <label>To year <input type="number" id="y1" min="1940" max="2026" value="2026"></label>
+    <label>Filter titles <input type="text" id="q" placeholder="contains…"></label>
+    <label class="check"><input type="checkbox" id="dub"> show dubbed South films</label>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <div class="chart-title"><h3 id="bar-title">Top 25 by normalised box office</h3>
+        <div class="legend"><span><i class="swatch" style="background:var(--tierA)"></i>tier A</span><span><i class="swatch" style="background:var(--tierB)"></i>tier B</span><span><i class="swatch" style="background:var(--tierC)"></i>tier C</span><span id="band-key"><i class="key" style="background:var(--ink-3);height:2px"></i>uncertainty band</span></div>
+      </div>
+      <div id="chart-bars"></div>
+    </div>
+    <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  </div>
+  <div class="more"><button id="more">Show 100 more</button><span id="count"></span></div>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <div class="cols">
+    <div><h3>What is normalised</h3>
+      <ul>
+        <li><b>Tax basis.</b> All figures are domestic India nett, after entertainment tax or GST. Gross is not used: before 2017 it could be twice nett in some states.</li>
+        <li><b>Ticket price.</b> Footfalls = nett ÷ average Hindi nett ticket price of the release year. Normalised box office = footfalls × 2025 ticket price. The two rank identically.</li>
+        <li><b>Population.</b> Footfalls per 1,000 people in the release year.</li>
+        <li><b>Industry size.</b> Nett ÷ median nett of the other films in that year's top 10. Blank where a year has fewer than five tracked films.</li>
+        <li><b>CPI.</b> Nett × CPI(2025) ÷ CPI(year). Shown for comparison; it understates pre-2005 films because ticket prices outran inflation.</li>
+        <li><b>Re-releases.</b> Excluded where the source separates them.</li>
+        <li><b>Confidence.</b> Tier A: footfalls published by a trade source (±10%). Tier B: derived from tracked nett, 1994 onward (±15%). Tier C: derived from reconstructed pre-1994 nett (±25% from 1975, ±40% earlier).</li>
+      </ul></div>
+    <div><h3>Ticket price series</h3>
+      <dl>
+        <dt>1994 – 2017</dt><dd>Box Office India yearly average ticket price (Hindi, nett).</dd>
+        <dt>2018 – 2020</dt><dd>Total nett ÷ total footfalls across the films Box Office India reports both for.</dd>
+        <dt>2022, 2023, 2025</dt><dd>Ormax Hindi average ticket price, gross ÷ 1.18 for GST. 2021 and 2024 interpolated; 2026 carries 2025 forward.</dd>
+        <dt>1940 – 1993</dt><dd>Log-linear interpolation between documented anchors: 1940s (¼ rupee), 1957, 1960, 1975 and the 1994 value.</dd>
+      </dl>
+      <p class="note">Reference price for normalised box office: <span id="atp25"></span>, the 2025 Hindi nett average. Income per person is World Bank GDP per capita in current rupees, 1960–2025, extrapolated to 2026.</p>
+    </div>
+    <div><h3>Limitations</h3>
+      <ul>
+        <li>India has no official admissions tracking; all footfalls are trade estimates.</li>
+        <li>Pre-1994 nett figures are retrospective reconstructions from historical Box Office India tables.</li>
+        <li>The 1957, 1960 and 1975 price anchors are set from the consensus footfalls of Mother India, Mughal-e-Azam and Sholay, so those three positions follow from the anchors rather than from independent data.</li>
+        <li>Published 1980s footfall claims (Coolie, Maine Pyar Kiya) imply a flat ₹2 ticket for the decade, inconsistent with the ₹11 recorded for 1994. They appear only in the consensus column.</li>
+        <li>Box Office India's structured data ends in mid-2024; 2024–26 footfalls come from its articles and from Bollywood Hungama.</li>
+        <li>Not adjusted for: screen count and seat capacity, piracy, streaming windows, release competition.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2>Checks against published figures</h2>
+  <p class="sub">Automated checks run on every build against figures the trade press and reference lists broadly agree on.</p>
+  <div class="tablewrap"><table class="checks" id="checks"><thead><tr><th class="l">Check</th><th class="l">Target</th><th class="l">Expected</th><th class="l">Actual</th><th class="l">Result</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section>
+  <h2>Data quality appendix</h2>
+  <div class="cols">
+    <div><h3>Sources disagree by more than 15%</h3><p>Primary footfalls against the alternate source for the same film.</p><div class="tablewrap"><table id="disagree"><thead><tr><th class="l">Film</th><th>Year</th><th>Primary</th><th>Alternate</th><th>Gap</th></tr></thead><tbody></tbody></table></div></div>
+    <div><h3>Tier C estimates vs published consensus</h3><p>Derived footfalls beside the Wikipedia ticket-sales table (midpoint where a range is given).</p><div class="tablewrap"><table id="consensus"><thead><tr><th class="l">Film</th><th>Year</th><th>Derived</th><th>Consensus</th><th>Gap</th></tr></thead><tbody></tbody></table></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Sources</h2>
+  <ul class="srcs" id="sources"></ul>
+  <p class="note">Produced by a reproducible pipeline from a fixed snapshot of the sources above. Hand-entered inputs (pre-1994 ticket prices, pre-1953 CPI, census anchors, dubbed-film list, title aliases) each cite their source.</p>
+</section>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const FILMS = __FILMS_JSON__;
+const SERIES = __SERIES_JSON__;
+const CHECKS = __CHECKS_JSON__;
+const META = __META_JSON__;
+
+const $ = s => document.querySelector(s);
+const fmt = (v, d=2) => v==null ? '—' : Number(v).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>0 && Math.abs(v)<100 ? Math.min(d,2) : 0});
+const LENS = {
+  a25: {label:'Normalised box office (₹ cr, 2025 ticket prices)', unit:'₹ crore', key:'a25', d:0, band:true, bandScale:true},
+  f:   {label:'Footfalls', unit:'crore tickets', key:'f', d:2, band:true},
+  pc:  {label:'Footfalls per 1,000 people', unit:'tickets per 1,000', key:'pc', d:1},
+  cpi: {label:'Nett at 2025 CPI', unit:'₹ crore', key:'cpi', d:0},
+  rel: {label:'Nett vs year median top-10', unit:'× median', key:'rel', d:2},
+  n:   {label:'Nominal nett', unit:'₹ crore', key:'n', d:1},
+};
+$('#n-films').textContent = FILMS.length.toLocaleString('en-IN');
+$('#atp25').textContent = '₹' + fmt(META.atp_2025, 0);
+document.querySelectorAll('.atp25').forEach(e => e.textContent = '₹' + fmt(META.atp_2025, 0));
+
+// ---------- tooltip ----------
+const tip = $('#tip');
+function showTip(html, x, y){ tip.innerHTML = html; tip.style.opacity = 1; const w = tip.offsetWidth, h = tip.offsetHeight; tip.style.left = Math.min(x + 14, innerWidth - w - 8) + 'px'; tip.style.top = (y - h - 12 < 8 ? y + 16 : y - h - 12) + 'px'; }
+function hideTip(){ tip.style.opacity = 0; }
+
+// ---------- chart 1: indexed series ----------
+(function(){
+  const base = SERIES.find(r => r.year === 1994);
+  const pts = SERIES.filter(r => r.atp != null && r.cpi != null && r.pop != null).map(r => ({
+    year: r.year, atp: 100*r.atp/base.atp, cpi: 100*r.cpi/base.cpi, pop: 100*r.pop/base.pop, gdp: r.gdp == null ? null : 100*r.gdp/base.gdp, interp: /interpolated|carry|anchor/.test(r.atp_method)
+  }));
+  const W = 1000, H = 420, m = {t:16, r:250, b:36, l:52};
+  const AX = W - 78; // right-hand rupee axis position
+  const x = y => m.l + (y - 1940) / (2026 - 1940) * (W - m.l - m.r);
+  const vals = pts.flatMap(p => [p.atp, p.cpi, p.pop, p.gdp]).filter(v => v != null);
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const ly = v => m.t + (Math.log10(hi) - Math.log10(v)) / (Math.log10(hi) - Math.log10(lo)) * (H - m.t - m.b);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Indexed ticket price, CPI and population, 1940 to 2026">`;
+  s += '<g class="grid">';
+  const ticks = [1, 3, 10, 30, 100, 300, 1000, 3000].filter(t => t >= lo*0.95 && t <= hi*1.05);
+  for (const t of ticks) s += `<line x1="${m.l}" x2="${W-m.r}" y1="${ly(t)}" y2="${ly(t)}"/>`;
+  s += '</g><g class="axis">';
+  for (const t of ticks) s += `<text x="${m.l-8}" y="${ly(t)+4}" text-anchor="end">${t.toLocaleString()}</text>`;
+  for (let yr = 1940; yr <= 2026; yr += 10) s += `<text x="${x(yr)}" y="${H-10}" text-anchor="middle">${yr}</text>`;
+  s += `<text x="${m.l+6}" y="${m.t+4}" text-anchor="start" style="font-size:10px">index, 1994 = 100, log scale</text>`;
+  // Right axis: the same scale relabelled in rupees for the ticket-price line (index 100 = ₹${base.atp}).
+  const rTicks = [0.25, 0.5, 1, 2, 5, 10, 20, 50, 100, 200].filter(v => { const idx = 100*v/base.atp; return idx >= lo*0.95 && idx <= hi*1.05; });
+  s += `<line x1="${AX}" x2="${AX}" y1="${m.t}" y2="${H-m.b}" stroke="var(--grid)" stroke-width="1"/>`;
+  for (const v of rTicks) { const yy = ly(100*v/base.atp); s += `<line x1="${AX}" x2="${AX+5}" y1="${yy}" y2="${yy}" stroke="var(--ink-3)" stroke-width="1"/><text x="${AX+9}" y="${yy+4}" text-anchor="start">₹${v < 1 ? v.toFixed(2) : v}</text>`; }
+  s += `<text x="${AX}" y="${H-10}" text-anchor="start" style="font-size:10px">₹ per ticket (blue line)</text></g>`;
+  const line = (key, color, dashInterp) => {
+    let d = '', dd = '', prev = null;
+    for (const p of pts) {
+      if (p[key] == null) { prev = null; continue; }
+      const seg = `${x(p.year)},${ly(p[key])}`;
+      if (prev) { const path = ` M${x(prev.year)},${ly(prev[key])} L${seg}`; if (dashInterp && (p.interp || prev.interp)) dd += path; else d += path; }
+      prev = p;
+    }
+    let out = `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    if (dd) out += `<path d="${dd}" fill="none" stroke="${color}" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/>`;
+    const last = pts[pts.length-1];
+    out += `<circle cx="${x(last.year)}" cy="${ly(last[key])}" r="4" fill="${color}" stroke="var(--surface)" stroke-width="2"/>`;
+    return out;
+  };
+  s += line('pop', 'var(--s3)', false) + line('gdp', 'var(--s4)', false) + line('cpi', 'var(--s2)', false) + line('atp', 'var(--s1)', true);
+  const last = pts[pts.length-1];
+  const labels = [['atp','Ticket price',last.atp],['cpi','CPI',last.cpi],['pop','Population',last.pop],['gdp','Income',last.gdp]].filter(l => l[2] != null).sort((a,b)=>b[2]-a[2]);
+  let yPrev = -99;
+  for (const [k, name, v] of labels) { let yy = ly(v); if (yy - yPrev < 15) yy = yPrev + 15; yPrev = yy; const extra = ''; s += `<text class="lbl" x="${x(last.year)+10}" y="${yy+4}">${name} <tspan class="val">${Math.round(v).toLocaleString()}${extra}</tspan></text>`; }
+  for (const yr of [1960, 1975, 1994, 2005, 2017, 2025]) { const raw = SERIES.find(q => q.year === yr); const p = pts.find(q => q.year === yr); if (!raw || !p) continue; const cx = x(yr), cy = ly(p.atp); s += `<circle cx="${cx}" cy="${cy}" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"/><text class="val" x="${cx}" y="${cy-9}" text-anchor="middle" style="fill:var(--ink)">₹${raw.atp < 10 ? raw.atp.toFixed(2) : Math.round(raw.atp)}</text>`; }
+  s += `<rect id="idx-hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}" fill="transparent"/><line id="idx-cross" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" stroke="var(--ink-3)" stroke-width="1" opacity="0"/></svg>`;
+  const el = $('#chart-index'); el.innerHTML = s;
+  const svg = el.querySelector('svg'), hit = el.querySelector('#idx-hit'), cross = el.querySelector('#idx-cross');
+  hit.addEventListener('mousemove', e => {
+    const r = svg.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width * W;
+    const yr = Math.round(1940 + (px - m.l) / (W - m.l - m.r) * (2026 - 1940));
+    const p = pts.find(q => q.year === yr); const raw = SERIES.find(q => q.year === yr);
+    if (!p || !raw) return; cross.setAttribute('x1', x(yr)); cross.setAttribute('x2', x(yr)); cross.setAttribute('opacity', 1);
+    const afford = raw.gdp == null ? '' : `<br>Income per person ₹${fmt(raw.gdp, 0)}/yr · a ticket = <b>${fmt(raw.tix_pct, 1)}%</b> of one day's income (${fmt(raw.tix_pct/100*24, 1)} h)`;
+    showTip(`<b>${yr}</b><br>Ticket price ₹${fmt(raw.atp, 2)} <span style="opacity:.75">(${raw.atp_method.replace(/_/g,' ')})</span><br>CPI index ${fmt(raw.cpi, 1)}<br>Population ${fmt(raw.pop/1e7, 1)} crore${afford}<br>Indexed: price ${Math.round(p.atp)}, CPI ${Math.round(p.cpi)}, population ${Math.round(p.pop)}${p.gdp != null ? ', income ' + Math.round(p.gdp) : ''}`, e.clientX, e.clientY);
+  });
+  hit.addEventListener('mouseleave', () => { cross.setAttribute('opacity', 0); hideTip(); });
+})();
+
+// ---------- ranking ----------
+let highlighted = null;
+const state = { lens:'a25', conf:'C', y0:1940, y1:2026, q:'', dub:false, sortKey:null, sortDir:-1, shown:100 };
+const TIER_ORDER = {A:0, B:1, C:2};
+function filtered(){
+  const L = LENS[state.lens];
+  const q = state.q.trim().toLowerCase();
+  let rows = FILMS.filter(r => r[L.key] != null && TIER_ORDER[r.c] <= TIER_ORDER[state.conf] && r.y >= state.y0 && r.y <= state.y1 && (state.dub || !r.d) && (!q || r.t.toLowerCase().includes(q)));
+  rows.sort((a,b) => (b[L.key] - a[L.key]) || ((b.n||0) - (a.n||0)) || a.t.localeCompare(b.t));
+  let rk = 0; rows.forEach(r => { r._rank = r.d ? null : ++rk; });
+  return rows;
+}
+function bandOf(r, L){ if (!L.band || r.lo == null) return null; const k = L.bandScale ? META.atp_2025 : 1; return [r.lo * k, r.hi * k]; }
+function drawBars(rows){
+  const L = LENS[state.lens];
+  const top = rows.filter(r => !r.d).slice(0, 25);
+  $('#bar-title').textContent = `Top ${top.length} by ${L.label.toLowerCase()}`;
+  $('#band-key').style.display = L.band ? '' : 'none';
+  if (!top.length) { $('#chart-bars').innerHTML = '<p class="note">No films match these filters.</p>'; return; }
+  const W = 1000, rowH = 30, m = {t:8, r:90, b:8, l:300}, H = m.t + m.b + rowH * top.length;
+  const max = Math.max(...top.map(r => { const b = bandOf(r, L); return b ? b[1] : r[L.key]; }));
+  const x = v => m.l + v / max * (W - m.l - m.r);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Top films by ${L.label}">`;
+  const step = niceStep(max);
+  s += '<g class="grid">'; for (let t = step; t <= max; t += step) s += `<line x1="${x(t)}" x2="${x(t)}" y1="${m.t}" y2="${H-m.b}"/>`; s += '</g>';
+  top.forEach((r, i) => {
+    const y = m.t + i * rowH, bh = 22, by = y + (rowH - bh) / 2, v = r[L.key], xe = x(v);
+    const fill = `var(--tier${r.c})`;
+    s += `<g class="bar" data-i="${i}"><rect x="${m.l-300}" y="${y}" width="${W}" height="${rowH}" fill="transparent"/>`;
+    s += `<text class="lbl" x="${m.l-12}" y="${y+rowH/2+4}" text-anchor="end">${esc(r.t.length > 34 ? r.t.slice(0,33)+'…' : r.t)} <tspan class="val">${r.y}</tspan></text>`;
+    s += `<path d="M${m.l},${by} H${Math.max(xe-4, m.l)} a4,4 0 0 1 4,4 v${bh-8} a4,4 0 0 1 -4,4 H${m.l} Z" fill="${fill}"/>`;
+    const b = bandOf(r, L);
+    if (b) s += `<line x1="${x(b[0])}" x2="${x(b[1])}" y1="${y+rowH/2}" y2="${y+rowH/2}" stroke="var(--ink-3)" stroke-width="2"/><line x1="${x(b[0])}" x2="${x(b[0])}" y1="${y+rowH/2-5}" y2="${y+rowH/2+5}" stroke="var(--ink-3)" stroke-width="2"/><line x1="${x(b[1])}" x2="${x(b[1])}" y1="${y+rowH/2-5}" y2="${y+rowH/2+5}" stroke="var(--ink-3)" stroke-width="2"/>`;
+    const lx = b ? x(b[1]) + 8 : xe + 8;
+    s += `<text class="val" x="${lx}" y="${y+rowH/2+4}">${fmt(v, L.d)}</text></g>`;
+  });
+  s += '</svg>';
+  const el = $('#chart-bars'); el.innerHTML = s;
+  el.querySelectorAll('g.bar').forEach(g => {
+    const r = top[+g.dataset.i];
+    g.addEventListener('mousemove', e => showTip(tipHtml(r), e.clientX, e.clientY));
+    g.addEventListener('mouseleave', hideTip);
+  });
+}
+function niceStep(max){ const p = Math.pow(10, Math.floor(Math.log10(max))); const f = max / p; return (f < 2 ? 0.25 : f < 5 ? 0.5 : 1) * p; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function tipHtml(r){
+  return `<b>${esc(r.t)}</b> (${r.y})${r.d ? ' · dubbed from ' + esc(r.l||'South India') : ''}<br>Tier ${r.c} · footfalls ${fmt(r.f)} cr${r.lo!=null ? ` (band ${fmt(r.lo)}–${fmt(r.hi)})` : ''}<br>Nett ₹${fmt(r.n,1)} cr · ticket ₹${fmt(r.atp,2)}<br>Per 1,000 people ${fmt(r.pc,1)} · at 2025 prices ₹${fmt(r.a25,0)} cr<br>${r.fm === 'sourced' ? 'Footfalls from ' + esc(r.fs||'') : 'Footfalls derived from nett ÷ ticket price'}${r.fa!=null ? ` · alt source ${fmt(r.fa)} cr` : ''}${r.fc!=null ? ` · consensus ${fmt(r.fc)} cr` : ''}`;
+}
+const COLS = [
+  {k:'_rank', h:'#', cls:'num', f:r=>r._rank ?? '—'},
+  {k:'t', h:'Film', cls:'title l', f:r=>esc(r.t) + (r.d ? '<span class="pill">dubbed</span>' : '') + (r.tie ? '<span class="pill" title="uncertainty band overlaps a neighbour of a different confidence tier">≈</span>' : '')},
+  {k:'y', h:'Year', cls:'num', f:r=>r.y},
+  {k:'c', h:'Tier', cls:'', f:r=>`<span class="tier ${r.c}">${r.c}</span>`},
+  {k:'a25', h:'Normalised ₹ cr', cls:'num', f:r=>fmt(r.a25,0)},
+  {k:'f', h:'Footfalls (cr)', cls:'num', f:r=>fmt(r.f)},
+  {k:'lo', h:'Band (cr)', cls:'num dim', f:r=>r.lo==null ? '—' : `${fmt(r.lo)}–${fmt(r.hi)}`},
+  {k:'pc', h:'Per 1,000', cls:'num', f:r=>fmt(r.pc,1)},
+  {k:'n', h:'Nett ₹ cr', cls:'num', f:r=>fmt(r.n,1)},
+  {k:'atp', h:'Ticket ₹', cls:'num dim', f:r=>fmt(r.atp,2)},
+  {k:'cpi', h:'At 2025 CPI', cls:'num', f:r=>fmt(r.cpi,0)},
+  {k:'rel', h:'× year median', cls:'num', f:r=>fmt(r.rel,2)},
+  {k:'rn', h:'Nominal rank', cls:'num dim', f:r=>r.rn ?? '—'},
+  {k:'fs', h:'Footfalls source', cls:'dim l', f:r=>esc((r.fm==='sourced' ? (r.fs||'') : 'derived').replace(/_/g,' '))},
+];
+function drawTable(rows){
+  const thead = $('#tbl thead'), tbody = $('#tbl tbody');
+  thead.innerHTML = '<tr>' + COLS.map(c => `<th class="${c.cls.includes('l')?'l':''} ${state.sortKey===c.k?'on':''}" data-k="${c.k}">${c.h}${state.sortKey===c.k ? (state.sortDir<0?' ↓':' ↑') : ''}</th>`).join('') + '</tr>';
+  let view = rows;
+  if (state.sortKey) { const k = state.sortKey; view = [...rows].sort((a,b) => { const av = a[k], bv = b[k]; if (av==null && bv==null) return 0; if (av==null) return 1; if (bv==null) return -1; return (typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))) * state.sortDir; }); }
+  const slice = view.slice(0, state.shown);
+  tbody.innerHTML = slice.map(r => `<tr class="${r.d?'dubbed':''} ${r===highlighted?'hit':''}">` + COLS.map(c => `<td class="${c.cls}">${c.f(r)}</td>`).join('') + '</tr>').join('');
+  $('#count').textContent = `${slice.length.toLocaleString('en-IN')} of ${rows.length.toLocaleString('en-IN')} films`;
+  $('#more').style.display = slice.length < rows.length ? '' : 'none';
+  thead.querySelectorAll('th').forEach(th => th.addEventListener('click', () => { const k = th.dataset.k; if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = (k==='t'||k==='fs'||k==='c') ? 1 : -1; } render(); }));
+}
+function render(){ const rows = filtered(); drawBars(rows); drawTable(rows); }
+$('#lens').addEventListener('change', e => { state.lens = e.target.value; state.sortKey = null; state.shown = 100; render(); });
+$('#conf').addEventListener('change', e => { state.conf = e.target.value; render(); });
+$('#y0').addEventListener('input', e => { state.y0 = +e.target.value || 1940; render(); });
+$('#y1').addEventListener('input', e => { state.y1 = +e.target.value || 2026; render(); });
+$('#q').addEventListener('input', e => { state.q = e.target.value; state.shown = 100; render(); });
+$('#dub').addEventListener('change', e => { state.dub = e.target.checked; render(); });
+$('#more').addEventListener('click', () => { state.shown += 100; render(); });
+render();
+
+// ---------- find a film ----------
+const ALL_RANKED = { a25: rankAll('a25'), f: rankAll('f'), pc: rankAll('pc'), cpi: rankAll('cpi'), rel: rankAll('rel'), n: rankAll('n') };
+function rankAll(key){ const m = new Map(); FILMS.filter(r => !r.d && r[key] != null).sort((a,b) => (b[key]-a[key]) || ((b.n||0)-(a.n||0)) || a.t.localeCompare(b.t)).forEach((r,i) => m.set(r, i+1)); return { m, n: m.size }; }
+const dl = $('#titles');
+dl.innerHTML = [...FILMS].sort((a,b) => a.t.localeCompare(b.t) || a.y - b.y).map(r => `<option value="${esc(r.t)} (${r.y})"></option>`).join('');
+function findFilm(q){
+  const s = q.trim().toLowerCase(); if (!s) return null;
+  const m = s.match(/^(.*)\((\d{4})\)\s*$/);
+  if (m) { const t = m[1].trim(), y = +m[2]; const hit = FILMS.find(r => r.t.toLowerCase() === t && r.y === y); if (hit) return hit; }
+  const exact = FILMS.filter(r => r.t.toLowerCase() === s); if (exact.length) return exact.sort((a,b)=>(b.f||0)-(a.f||0))[0];
+  const starts = FILMS.filter(r => r.t.toLowerCase().startsWith(s)); if (starts.length === 1) return starts[0];
+  const contains = FILMS.filter(r => r.t.toLowerCase().includes(s)); if (contains.length === 1) return contains[0];
+  return null;
+}
+function showCard(r){
+  const card = $('#film-card'); highlighted = r;
+  if (!r) { card.hidden = true; render(); return; }
+  const cell = (label, val, key, d) => { const rk = ALL_RANKED[key].m.get(r); return `<div><span class="k">${label}</span><span class="v">${val}</span><span class="r">${r.d ? 'not ranked (dubbed)' : rk ? `#${rk} of ${ALL_RANKED[key].n}` : '—'}</span></div>`; };
+  card.innerHTML = `<div class="card">
+    <div class="head"><h3>${esc(r.t)}</h3><span class="yr">${r.y}</span><span class="tier ${r.c}">tier ${r.c}</span>${r.d ? `<span class="pill">Hindi dub of a ${esc(r.l||'South Indian')} film</span>` : ''}${r.tie ? '<span class="pill">≈ band overlaps a neighbour</span>' : ''}</div>
+    <div class="lensgrid">
+      ${cell('Normalised box office', '₹' + fmt(r.a25,0) + ' cr', 'a25')}
+      ${cell('Footfalls', fmt(r.f) + ' cr' + (r.lo!=null ? ` <span class="r">(${fmt(r.lo)}–${fmt(r.hi)})</span>` : ''), 'f')}
+      ${cell('Per 1,000 people', fmt(r.pc,1), 'pc')}
+      ${cell('Nett at 2025 CPI', '₹' + fmt(r.cpi,0) + ' cr', 'cpi')}
+      ${cell('× year median top-10', fmt(r.rel,2), 'rel')}
+      ${cell('Nominal nett', '₹' + fmt(r.n,1) + ' cr', 'n')}
+    </div>
+    <div class="prov">Ticket price that year ₹${fmt(r.atp,2)} · nett from ${esc((r.ns||'—').replace(/_/g,' '))} · footfalls ${r.fm==='sourced' ? 'from ' + esc((r.fs||'').replace(/_/g,' ')) : 'derived as nett ÷ ticket price'}${r.fa!=null ? ` · alternate source ${fmt(r.fa)} cr (${esc((r.fas||'').replace(/_/g,' '))})` : ''}${r.fc!=null ? ` · published consensus ${fmt(r.fc)} cr` : ''}</div>
+  </div>`;
+  card.hidden = false;
+  render();
+}
+$('#find').addEventListener('input', e => showCard(findFilm(e.target.value)));
+$('#find').addEventListener('change', e => showCard(findFilm(e.target.value)));
+
+// ---------- checks ----------
+$('#checks tbody').innerHTML = CHECKS.map(c => `<tr><td class="l">${esc(c.check.replace(/_/g,' '))}</td><td class="l">${esc(c.target)}</td><td class="l">${esc(c.expected)}</td><td class="l">${esc(c.actual)}</td><td class="l ${c.pass?'ok':'bad'}">${c.pass?'pass':'fail'}</td></tr>`).join('');
+
+// ---------- appendix ----------
+const dis = FILMS.filter(r => r.fm==='sourced' && r.fa!=null && Math.abs(r.f - r.fa)/r.f > 0.15).sort((a,b)=>b.f-a.f);
+$('#disagree tbody').innerHTML = dis.map(r => `<tr><td class="l">${esc(r.t)}</td><td class="num">${r.y}</td><td class="num">${fmt(r.f)} <span class="dim">${esc((r.fs||'').replace(/_/g,' '))}</span></td><td class="num">${fmt(r.fa)} <span class="dim">${esc((r.fas||'').replace(/_/g,' '))}</span></td><td class="num">${Math.round((r.fa-r.f)/r.f*100)}%</td></tr>`).join('') || '<tr><td colspan="5" class="l dim">None</td></tr>';
+const con = FILMS.filter(r => r.c==='C' && r.fc!=null).sort((a,b)=>b.f-a.f);
+$('#consensus tbody').innerHTML = con.map(r => `<tr><td class="l">${esc(r.t)}</td><td class="num">${r.y}</td><td class="num">${fmt(r.f)}</td><td class="num">${fmt(r.fc)}</td><td class="num">${Math.round((r.f-r.fc)/r.fc*100)}%</td></tr>`).join('');
+
+// ---------- sources ----------
+$('#sources').innerHTML = META.sources.map(s => `<li><b>${esc(s.name)}</b> — ${esc(s.role)} · <a href="${esc(s.url)}" rel="noopener">${esc(s.url)}</a></li>`).join('');
+</script>

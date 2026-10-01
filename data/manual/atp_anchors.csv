@@ -1,0 +1,5 @@
+year,nett_atp_rupees,basis,source_url,note
+1940,0.25,anecdotal_ticket_price,https://www.theindiaforum.in/article/journey-1947-cinema-halls,"Typical ticket 4 annas (Rs 0.25) in the early 1940s; entertainment tax small. Very low confidence."
+1957,0.40,landmark_film_implied,https://en.wikipedia.org/wiki/List_of_highest-grossing_films_in_India,"Mother India: Rs 4 cr nett (Wikipedia by-year) / ~10 cr footfalls (consensus estimate) = Rs 0.40"
+1960,0.55,landmark_film_implied,https://en.wikipedia.org/wiki/List_of_highest-grossing_films_in_India,"Mughal-e-Azam: Rs 5.5 cr nett / ~10 cr footfalls (Box Office India estimate quoted by Wikipedia/DNA) = Rs 0.55"
+1975,1.20,landmark_film_implied,https://boxofficeindia.com/report-details.php?articleid=9313,"Sholay: Rs 15 cr nett / 12.5-15 cr footfalls = Rs 1.0-1.2; BOI Galaxy Rajkot 50-week data: nett Rs 9.83 lakh / 6.70 lakh footfalls = Rs 1.47. Blended Rs 1.20."

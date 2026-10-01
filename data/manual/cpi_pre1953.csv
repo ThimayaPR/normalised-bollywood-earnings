@@ -1,0 +1,4 @@
+year,cpi_index_2010_100,source_url,note
+1940,1.05,https://labourbureau.gov.in/consumer-price-index-numbers-for-industrial-workers,"Working-class cost-of-living index 1939=100 roughly 106 in 1940; rescaled to BIS 1953 = 2.74 using Labour Bureau linking factors. Low confidence."
+1945,2.40,https://labourbureau.gov.in/consumer-price-index-numbers-for-industrial-workers,"WWII inflation: index roughly 2.3x 1939 by 1945. Rescaled to BIS basis. Low confidence."
+1950,2.80,https://labourbureau.gov.in/consumer-price-index-numbers-for-industrial-workers,"CPI-IW 1949 base; 1950 approx 101 on 1949=100, slightly above 1953 BIS value after 1952-53 dip. Low confidence."
