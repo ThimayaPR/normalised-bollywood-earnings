@@ -1,4 +1,4 @@
-.PHONY: fetch build report all test release clean
+.PHONY: fetch build report all test release clean qa
 
 CARGO ?= cargo
 
@@ -22,3 +22,6 @@ release:
 
 clean:
 	rm -rf data/interim output/*.csv output/report.html
+
+qa:
+	qa/run.sh

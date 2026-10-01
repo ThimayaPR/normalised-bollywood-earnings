@@ -19,6 +19,7 @@ cargo run --release -- fetch    # download sources into data/raw (cache-first, ~
 cargo run --release -- build    # offline: parse, merge, normalise, write output/, run checks
 cargo run --release -- report   # render output/report.html
 cargo test
+qa/run.sh                       # headless-Chrome checks on the rendered report (needs Google Chrome)
 ```
 
 `build` never touches the network. Running it twice on the same `data/raw/` produces
@@ -120,5 +121,6 @@ src/atp.rs             CPI / population / ticket-price series with method labels
 src/normalise.rs       the lenses, tiers, bands, ranks, tie flags
 src/checks.rs          sanity checks against published figures
 src/report.rs          fills templates/report.html with JSON
+qa/                    headless-browser harness for the report (lenses, filters, finder, a11y)
 data/manual/*.csv      hand-curated inputs, one source URL per row
 ```
