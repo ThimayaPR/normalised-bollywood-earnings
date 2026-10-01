@@ -73,6 +73,17 @@ svg .val{fill:var(--ink-2);font-family:var(--font-mono);font-size:11.5px}
 .lensgrid .r{font-size:12.5px;color:var(--ink-2)}
 .card .prov{font-size:13px;color:var(--ink-2)}
 tr.hit td{background:color-mix(in srgb, var(--accent) 14%, transparent)}
+.example{margin-bottom:22px}
+.example .sub{margin-bottom:14px}
+.steps{display:grid;grid-template-columns:1fr;gap:12px}
+.step{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--surface-2);color:var(--ink-2);font-family:var(--font-mono);font-size:13px;display:grid;place-items:center}
+.step h4{margin:3px 0 6px;font-size:15px;font-family:var(--font-body);font-weight:600}
+.step p{margin:0 0 6px;color:var(--ink-2);font-size:14px}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px}
+.calc div{background:var(--ground);border-radius:7px;padding:8px 12px;font-family:var(--font-mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;overflow-x:auto;white-space:nowrap}
+.calc div b{color:var(--accent-ink);font-weight:500}
+.calc .who{font-family:var(--font-body);color:var(--ink-3);font-size:12px;display:block;margin-bottom:2px}
 .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 18px}
 .controls label{display:grid;gap:4px;font-size:12px;color:var(--ink-3);font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
 .controls select,.controls input[type=text],.controls input[type=number]{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;text-transform:none;letter-spacing:0}
@@ -187,6 +198,11 @@ a{color:var(--accent-ink)}
 
 <section>
   <h2>Method</h2>
+  <div class="panel example">
+    <h3>Worked example: Sholay (1975) and 3 Idiots (2009)</h3>
+    <p class="sub">The normalised figure answers one question: how much would this film have earned if every ticket it sold had been priced at the 2025 average? Three steps, with the actual values from the dataset.</p>
+    <div id="example"></div>
+  </div>
   <div class="cols">
     <div><h3>What is normalised</h3>
       <ul>
@@ -375,7 +391,7 @@ function tipHtml(r){
   return `<b>${esc(r.t)}</b> (${r.y})${r.d ? ' · dubbed from ' + esc(r.l||'South India') : ''}<br>Tier ${r.c} · footfalls ${fmt(r.f)} cr${r.lo!=null ? ` (band ${fmt(r.lo)}–${fmt(r.hi)})` : ''}<br>Nett ₹${fmt(r.n,1)} cr · ticket ₹${fmt(r.atp,2)}<br>Per 1,000 people ${fmt(r.pc,1)} · at 2025 prices ₹${fmt(r.a25,0)} cr<br>${r.fm === 'sourced' ? 'Footfalls from ' + esc(r.fs||'') : 'Footfalls derived from nett ÷ ticket price'}${r.fa!=null ? ` · alt source ${fmt(r.fa)} cr` : ''}${r.fc!=null ? ` · consensus ${fmt(r.fc)} cr` : ''}`;
 }
 const COLS = [
-  {k:'_rank', h:'#', cls:'num', f:r=>r._rank ?? '—'},
+  {k:'_rank', h:'# (in view)', cls:'num', f:r=>r._rank ?? '—'},
   {k:'t', h:'Film', cls:'title l', f:r=>esc(r.t) + (r.d ? '<span class="pill">dubbed</span>' : '') + (r.tie ? '<span class="pill" title="uncertainty band overlaps a neighbour of a different confidence tier">≈</span>' : '')},
   {k:'y', h:'Year', cls:'num', f:r=>r.y},
   {k:'c', h:'Tier', cls:'', f:r=>`<span class="tier ${r.c}">${r.c}</span>`},
@@ -387,6 +403,7 @@ const COLS = [
   {k:'atp', h:'Ticket ₹', cls:'num dim', f:r=>fmt(r.atp,2)},
   {k:'cpi', h:'At 2025 CPI', cls:'num', f:r=>fmt(r.cpi,0)},
   {k:'rel', h:'× year median', cls:'num', f:r=>fmt(r.rel,2)},
+  {k:'rz', h:'Normalised rank', cls:'num', f:r=>r.rz ?? '—'},
   {k:'rn', h:'Nominal rank', cls:'num dim', f:r=>r.rn ?? '—'},
   {k:'fs', h:'Footfalls source', cls:'dim l', f:r=>esc((r.fm==='sourced' ? (r.fs||'') : 'derived').replace(/_/g,' '))},
 ];
@@ -446,6 +463,33 @@ function showCard(r){
 }
 $('#find').addEventListener('input', e => showCard(findFilm(e.target.value)));
 $('#find').addEventListener('change', e => showCard(findFilm(e.target.value)));
+
+// ---------- worked example ----------
+(function(){
+  const S = FILMS.find(r => r.t === 'Sholay' && r.y === 1975), I = FILMS.find(r => r.t === '3 Idiots' && r.y === 2009);
+  if (!S || !I) return;
+  const ratioNom = I.n / S.n, ratioNorm = S.a25 / I.a25;
+  const row = (r, body) => `<div><span class="who">${esc(r.t)} (${r.y})</span>${body}</div>`;
+  const ref = fmt(META.atp_2025, 0);
+  $('#example').innerHTML = `<div class="steps">
+    <div class="step"><span class="n">1</span><div>
+      <h4>Start from domestic nett collection</h4>
+      <p>What Indian cinemas kept after entertainment tax or GST. Nominally, 3 Idiots out-earned Sholay ${fmt(ratioNom,1)} to 1.</p>
+      <div class="calc">${row(S, `nett = <b>₹${fmt(S.n,1)} cr</b>`)}${row(I, `nett = <b>₹${fmt(I.n,2)} cr</b>`)}</div>
+    </div></div>
+    <div class="step"><span class="n">2</span><div>
+      <h4>Convert rupees to tickets sold</h4>
+      <p>Where a trade source publishes footfalls, that figure is used (tier A). Otherwise nett is divided by the average Hindi ticket price of the release year (tiers B and C). 3 Idiots has a published count; Sholay's is derived from the 1975 ticket price of ₹${fmt(S.atp,2)}.</p>
+      <div class="calc">${row(S, `₹${fmt(S.n,1)} cr ÷ ₹${fmt(S.atp,2)} = <b>${fmt(S.f,2)} cr tickets</b> · tier ${S.c}`)}${row(I, `published footfalls = <b>${fmt(I.f,2)} cr tickets</b> · tier ${I.c} <span style="color:var(--ink-3)">(nett ÷ ₹${fmt(I.atp,2)} would give ${fmt(I.n/I.atp,2)} cr)</span>`)}</div>
+    </div></div>
+    <div class="step"><span class="n">3</span><div>
+      <h4>Re-price every ticket at the 2025 average (₹${ref})</h4>
+      <p>Tickets × ₹${ref} gives normalised box office. Films are then ranked on that figure; dubbed releases are excluded from the ranking. Normalised, Sholay leads 3 Idiots ${fmt(ratioNorm,1)} to 1, reversing the nominal order.</p>
+      <div class="calc">${row(S, `${fmt(S.f,2)} cr × ₹${ref} = <b>₹${fmt(S.a25,0)} cr</b> · normalised rank <b>#${S.rz}</b> (nominal #${S.rn})`)}${row(I, `${fmt(I.f,2)} cr × ₹${ref} = <b>₹${fmt(I.a25,0)} cr</b> · normalised rank <b>#${I.rz}</b> (nominal #${I.rn})`)}</div>
+    </div></div>
+  </div>
+  <p class="note">Because every film is multiplied by the same ₹${ref}, the normalised ranking is identical to ranking by tickets sold. Sholay's band is ±25% (tier C), so its normalised figure is ₹${fmt(S.lo*META.atp_2025,0)}–${fmt(S.hi*META.atp_2025,0)} cr; 3 Idiots' is ±10% (tier A).</p>`;
+})();
 
 // ---------- checks ----------
 $('#checks tbody').innerHTML = CHECKS.map(c => `<tr><td class="l">${esc(c.check.replace(/_/g,' '))}</td><td class="l">${esc(c.target)}</td><td class="l">${esc(c.expected)}</td><td class="l">${esc(c.actual)}</td><td class="l ${c.pass?'ok':'bad'}">${c.pass?'pass':'fail'}</td></tr>`).join('');
